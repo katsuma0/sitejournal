@@ -550,7 +550,8 @@ function renderCgs(){ const box=document.getElementById('cgs'); box.innerHTML=''
         <div class="grid"></div></div>`;
     card.querySelector('[data-toggle]').addEventListener('click',()=>{ const opening=!card.classList.contains('open'); card.classList.toggle('open'); if(opening) fillGrid(card); });
     card.querySelector('[data-cgrate]').addEventListener('click',e=>{ e.stopPropagation(); openSheet('campground',cidOf(p.id,cg.id),cg.id,null); });
-    box.appendChild(card); }); }
+    box.appendChild(card); });
+  if(p.campgrounds.length===1){ const only=box.querySelector('.cg'); if(only){ only.classList.add('open'); fillGrid(only); } } }
 function fillGrid(card){ if(card.dataset.filled) return; const cg=CG_BY_ID(card.dataset.cg); const grid=card.querySelector('.grid');
   const frag=document.createDocumentFragment(); cgSites(cg).forEach(s=>frag.appendChild(makeChip(cg,s))); grid.appendChild(frag); card.dataset.filled='1'; }
 const MEDAL_SVG='<svg class="medal" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 1a11 11 0 1 0 .01 0z M12 4.4 13.88 9.41 19.23 9.65 15.04 12.99 16.47 18.15 12 15.2 7.53 18.15 8.96 12.99 4.77 9.65 10.12 9.41z"/></svg>';
@@ -609,7 +610,7 @@ function paintDots(){ const s=sc(cur.type,cur.k); document.querySelectorAll('#do
 function openSheet(type,k,cgId,site){ cur={type,k,cg:cgId,site,trailName:(type==='trail'?cgId:null)};
   const wb=document.getElementById('wantBtn'), pw=document.getElementById('photoWrap'), whr=document.getElementById('d-where');
   if(type==='site'){ document.getElementById('d-kind').textContent='Site'; document.getElementById('d-title').textContent='Site '+site;
-    whr.textContent=cgId+' · '+curPark.name; whr.style.display='';
+    whr.textContent=(cgId===curPark.name?((curPark.region||'').split(' · ')[0]||'')+' · '+cgId:cgId+' · '+curPark.name); whr.style.display='';
     document.getElementById('d-ctx').textContent=''; wb.style.display=''; pw.style.display='';
     const w=wantOf(k); wb.setAttribute('aria-pressed',w); wb.textContent=(w?'★ ':'☆ ')+'Want this one next time'; renderPhotos(k);
   } else if(type==='trail'){ const t=(curPark.trails||[]).find(x=>x.name===cgId); whr.style.display='none';
