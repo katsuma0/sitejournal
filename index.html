@@ -172,16 +172,17 @@
 
   .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:var(--gap-m);margin-top:14px}
   .site{position:relative;aspect-ratio:1;border-radius:var(--r-sm);border:1px solid var(--mist-2);background:var(--paper);
-    font-weight:700;font-size:13px;color:var(--moss);cursor:pointer;display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:14.5px;color:var(--moss);cursor:pointer;display:flex;align-items:center;justify-content:center;
     transition:transform .12s;-webkit-tap-highlight-color:transparent;font-variant-numeric:tabular-nums}
   .site:active{transform:scale(.92)} .site.rated{color:#fff;border-color:transparent}
   .site .badge{position:absolute;bottom:2px;right:4px;font-size:8.5px;font-weight:800;opacity:.95}
   .site .star{position:absolute;top:2px;left:4px;font-size:9px;color:var(--amber);line-height:1}
   .site.rated .star{color:#FFE0AE}
   .site .nstar{position:absolute;top:5px;right:7px;font-size:10px;color:var(--moss);line-height:1}
+  .site.rated .nstar{color:#FFFFFF}
+  .site .nstar.both,.trail .nstar.both{color:var(--amber)}
   .site.rated .nstar{color:rgba(255,255,255,.95)}
   .site .medal{position:absolute;top:5px;right:6px;width:13px;height:13px;color:var(--moss);display:block}
-  .site.wanted .medal{top:-5px;right:-5px;color:var(--amber)}
   .site.rated .medal{color:rgba(255,255,255,.95)}
   .site.hidden{display:none} .cg.filtered-empty{display:none}
   /* trails */
@@ -622,7 +623,7 @@ function fillGrid(card){ if(card.dataset.filled) return; const cg=CG_BY_ID(card.
   const frag=document.createDocumentFragment(); cgSites(cg).forEach(s=>frag.appendChild(makeChip(cg,s))); grid.appendChild(frag); card.dataset.filled='1'; }
 const MEDAL_SVG='<svg class="medal" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 1a11 11 0 1 0 .01 0z M12 4.4 13.88 9.41 19.23 9.65 15.04 12.99 16.47 18.15 12 15.2 7.53 18.15 8.96 12.99 4.77 9.65 10.12 9.41z"/></svg>';
 function chipInner(cg,s){ const k=keyOf(curPark.id,cg.id,s), v=sc('site',k), c=scoreColor(v), note=!!noteOf('site',k), want=wantOf(k), photo=photoKeys.has(k);
-  const tr=(note||photo)?MEDAL_SVG:'';
+  const tr=(note||photo)?('<span class="nstar'+((note&&photo)?' both':'')+'">★</span>'):'';
   return `${s}${tr}`; }
 function makeChip(cg,s){ const k=keyOf(curPark.id,cg.id,s), c=scoreColor(sc('site',k));
   const b=document.createElement('button'); b.className='site'+(c?' rated':'')+(wantOf(k)?' wanted':''); b.dataset.key=k; b.dataset.site=s; if(c) b.style.background=c;
@@ -654,7 +655,7 @@ function renderTrails(){
   trails.forEach(t=>{
     const k=trailKey(t.name), v=sc('trail',k), col=scoreColor(v), note=!!noteOf('trail',k), photo=photoKeys.has(k);
     const card=document.createElement('button'); card.className='trail'; card.dataset.trail=t.name;
-    const tmark=(note||photo)?MEDAL_SVG:'';
+    const tmark=(note||photo)?('<span class="nstar'+((note&&photo)?' both':'')+'">★</span>'):'';
     card.innerHTML=`<div class="tr-left"><div class="tr-name">${t.name}</div>
       <div class="tr-meta">${fmtLen(t.length)} · ${t.difficulty}</div></div>
       <div class="tr-rate ${col?'rated':''}" ${col?`style="background:${col}"`:''} ${col?'':'hidden'}>${col?v+'/5':''}</div>${tmark}`;
@@ -668,7 +669,7 @@ function refreshTrailCard(name){
   const r=card.querySelector('.tr-rate'); r.hidden=!col; r.classList.toggle('rated',!!col); r.style.background=col||'';
   r.textContent=col?v+'/5':'';
   card.querySelectorAll('.nstar,.medal').forEach(el=>el.remove());
-  if(note||photo) card.insertAdjacentHTML('beforeend',MEDAL_SVG);
+  if(note||photo) card.insertAdjacentHTML('beforeend','<span class="nstar'+((note&&photo)?' both':'')+'">★</span>');
 }
 
 let cur={type:null,k:null,cg:null,site:null,trailName:null};
