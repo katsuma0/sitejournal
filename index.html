@@ -506,7 +506,7 @@ function renderParks(){ const box=document.getElementById('parkList'); box.inner
     const b=document.createElement('button'); b.className='park-card';
     b.innerHTML=`<div class="pc-top"><span class="pc-name">${p.name}</span>${started?`<span class="pc-pct tnum">${st.rated}/${st.total}</span>`:''}</div>
       <div class="pc-region">${p.region}</div>
-      <div class="pc-meta"><span>${p.campgrounds.length} campgrounds</span><span>·</span><span>${st.total} sites</span>${started?`<span>·</span><span>${st.rated} scouted</span>`:''}</div>
+      <div class="pc-meta"><span>${st.total} sites</span>${started?`<span>·</span><span>${st.rated} scouted</span>`:''}</div>
       ${started?`<div class="pc-bar"><i style="width:${st.pct}%"></i></div>`:''}`;
     b.addEventListener('click',()=>openPark(p.id)); box.appendChild(b); }); }
 
@@ -563,7 +563,7 @@ function renderCgs(){ const box=document.getElementById('cgs'); box.innerHTML=''
         <div class="cg-right"><div class="cg-prog" ${st.rated>0?'':'hidden'}><div class="bar"><i style="width:${st.pct}%"></i></div><div class="lbl tnum">${st.rated}/${st.total}</div></div>
         <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg></div>
       </button>
-      <div class="cg-body"><div class="cg-body-head"><span class="cg-desc">${cgSites(cg).length} sites</span>
+      <div class="cg-body"><div class="cg-body-head"><span class="cg-desc"></span>
         <button class="cg-rate ${col?'rated':''}" ${col?`style="background:${col}"`:''} data-cgrate>${col?`Campground · ${own}/5`:'Rate campground'}</button></div>
         <div class="grid"></div></div>`;
     card.querySelector('[data-toggle]').addEventListener('click',()=>{ const opening=!card.classList.contains('open'); card.classList.toggle('open'); if(opening) fillGrid(card); });
