@@ -356,6 +356,9 @@
   .site:active{transform:scale(.93)}
   .trail:active,.cg-head:active{transform:scale(.99)}
   .cg.open .grid{animation:viewIn .18s ease}
+  #view-parks.under{position:fixed;left:0;right:0;top:0;bottom:0;overflow:hidden;z-index:0;pointer-events:none}
+  #view-park.dragback{position:relative;z-index:1;background:var(--paper);min-height:100vh;
+    box-shadow:-12px 0 34px rgba(0,0,0,.14);touch-action:pan-y;will-change:transform}
 </style>
 </head>
 <body>
@@ -363,7 +366,7 @@
 <section id="view-parks">
   <div class="appbar">
     <div class="eyebrow">Ontario Parks</div>
-    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><span class="ver">v0.107 beta</span></div>
+    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><span class="ver">v0.108 beta</span></div>
     <div class="sub">Pick a park, open its campgrounds, and go for a nice walk around the sites. Rate them and note which you'd book next time.</div>
   </div>
   <div class="wrap">
@@ -701,12 +704,31 @@ document.getElementById('backBtn').addEventListener('click',goHome);
     try{ indexedDB.deleteDatabase('scout-photos'); }catch(e){}
     setTimeout(function(){ location.reload(); },200);
   }); })();
-(function(){ /* swipe right anywhere on the park page = back */
-  var el=document.getElementById('view-park'), sx=0, sy=0, on=false;
-  el.addEventListener('touchstart',function(e){ sx=e.touches[0].clientX; sy=e.touches[0].clientY; on=true; },{passive:true});
-  el.addEventListener('touchend',function(e){ if(!on) return; on=false;
-    var dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
-    if(dx>80 && Math.abs(dy)<Math.abs(dx)*0.6){ buzz(6); goHome(); } });
+(function(){ /* interactive drag-back: the park page follows your finger and reveals home underneath */
+  var vp=document.getElementById('view-park'), vh=document.getElementById('view-parks');
+  var sx=0, sy=0, dx=0, lastX=0, lastT=0, vel=0, deciding=false, dragging=false;
+  function prep(){ vh.hidden=false; vh.classList.add('under'); vp.classList.add('dragback'); }
+  function cancel(){ vp.style.transition='transform .22s cubic-bezier(.22,1,.36,1)'; vp.style.transform='translateX(0)';
+    setTimeout(function(){ vp.style.transition=''; vp.style.transform=''; vp.classList.remove('dragback');
+      vh.classList.add? vh.classList.remove('under'):0; vh.hidden=true; },230); }
+  function complete(){ buzz(9);
+    vp.style.transition='transform .18s ease-out'; vp.style.transform='translateX(105%)';
+    setTimeout(function(){ vp.style.transition=''; vp.style.transform=''; vp.classList.remove('dragback');
+      vh.classList.remove('under'); vp.hidden=true; vh.hidden=false;
+      clearGSearch(); renderParks(); window.scrollTo(0,0); },190); }
+  vp.addEventListener('touchstart',function(e){ if(e.touches.length!==1) return;
+    sx=e.touches[0].clientX; sy=e.touches[0].clientY; lastX=sx; lastT=Date.now(); vel=0; dx=0; deciding=true; dragging=false; },{passive:true});
+  vp.addEventListener('touchmove',function(e){ if(!deciding&&!dragging) return;
+    var x=e.touches[0].clientX, y=e.touches[0].clientY; dx=x-sx; var dy=y-sy;
+    if(deciding){ if(Math.abs(dx)>8||Math.abs(dy)>8){ deciding=false;
+      if(dx>0&&Math.abs(dx)>Math.abs(dy)*1.2){ dragging=true; prep(); } } }
+    if(dragging){ e.preventDefault();
+      var now=Date.now(); if(now>lastT) vel=(x-lastX)/(now-lastT); lastX=x; lastT=now;
+      vp.style.transition='none'; vp.style.transform='translateX('+Math.max(0,dx)+'px)'; } },{passive:false});
+  vp.addEventListener('touchend',function(){ if(!dragging){ deciding=false; return; }
+    dragging=false;
+    if(dx>window.innerWidth*0.33||vel>0.55) complete(); else cancel(); });
+  vp.addEventListener('touchcancel',function(){ if(dragging){ dragging=false; cancel(); } deciding=false; });
 })();
 
 function renderCgs(){ const box=document.getElementById('cgs'); box.innerHTML=''; const p=curPark;
