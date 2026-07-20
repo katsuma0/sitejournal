@@ -2,7 +2,7 @@
   {
     "id": "algonquinachray",
     "name": "Achray",
-    "region": "Algonquin · Barron Canyon Road",
+    "region": "Algonquin Park · Barron Canyon Road",
     "url": "https://www.ontarioparks.ca/park/algonquin",
     "blurb": "On Grand Lake on the remote east side of the park, near the Barron Canyon. Rustic sites and cabins.",
     "fishing": "Brook trout, lake trout, smallmouth bass (special fishery)",
@@ -74,7 +74,7 @@
   {
     "id": "arrowhead",
     "name": "Arrowhead",
-    "region": "Central · Huntsville",
+    "region": "Central Park · Huntsville",
     "url": "https://www.ontarioparks.ca/park/arrowhead",
     "blurb": "Three campgrounds near Huntsville, with Stubb's Falls, a swimmable lake, and a famous winter ice-skating trail.",
     "fishing": "Arrowhead and Mayflower Lakes: bass, pike, rainbow trout",
@@ -557,7 +557,7 @@
   {
     "id": "awenda",
     "name": "Awenda",
-    "region": "Central · Penetanguishene",
+    "region": "Central Park · Penetanguishene",
     "url": "https://www.ontarioparks.ca/park/awenda",
     "blurb": "A forested peninsula on Georgian Bay with five beaches and six campgrounds shaded by sugar maples. Kettle's Lake is motor-free for paddling, and 30 km of trails wind to the shore.",
     "fishing": "Georgian Bay: bass, pike, walleye, panfish; Kettle's Lake: bass, panfish",
@@ -999,7 +999,7 @@
   {
     "id": "balsamlake",
     "name": "Balsam Lake",
-    "region": "Central · Coboconk",
+    "region": "Central Park · Coboconk",
     "url": "https://www.ontarioparks.ca/park/balsamlake",
     "blurb": "A big family park on Balsam Lake, the high point of the Trent-Severn Waterway, with a long sandy beach and eight campgrounds. Good fishing for bass, walleye, and muskie.",
     "fishing": "Balsam Lake: largemouth and smallmouth bass, walleye, muskie",
@@ -1611,7 +1611,7 @@
   {
     "id": "bonecho",
     "name": "Bon Echo",
-    "region": "Southeast · Cloyne",
+    "region": "Southeast Park · Cloyne",
     "url": "https://www.ontarioparks.ca/park/bonecho",
     "blurb": "Home to the 100 m Mazinaw Rock and its Indigenous pictographs, reached by the Mugwump ferry. Two lakeside campgrounds plus walk-in and backcountry sites.",
     "fishing": "Mazinaw Lake: lake trout, bass, walleye",
@@ -2147,7 +2147,7 @@
   {
     "id": "brontecreek",
     "name": "Bronte Creek",
-    "region": "Southwest · Oakville",
+    "region": "Southwest Park · Oakville",
     "url": "https://www.ontarioparks.ca/park/brontecreek",
     "blurb": "The most urban park in the system, in Oakville. 144 all-electric sites in four small loops, plus a Play Barn, historic farm, and trails. Day-use and campground have separate entrances; no beach.",
     "fishing": "Bronte Creek, smallmouth bass, panfish",
@@ -2377,7 +2377,7 @@
   {
     "id": "algonquincanisbay",
     "name": "Canisbay",
-    "region": "Algonquin · Highway 60",
+    "region": "Algonquin Park · Highway 60",
     "url": "https://www.ontarioparks.ca/park/algonquin",
     "blurb": "KM 23. A big hardwood campground on Canisbay Lake, dog-free and radio-free, with no motorboats allowed.",
     "fishing": "Brook trout, lake trout, smallmouth bass (special fishery)",
@@ -2660,7 +2660,7 @@
   {
     "id": "charlestonlake",
     "name": "Charleston Lake",
-    "region": "Southeast · Lyndhurst",
+    "region": "Southeast Park · Lyndhurst",
     "url": "https://www.ontarioparks.ca/park/charlestonlake",
     "blurb": "A clear Canadian Shield lake in eastern Ontario near Brockville, with three wooded campgrounds, boat-in interior sites, and a strong trail network. Sandstone Island and the 10 km Tallow Rock Bay loop are highlights.",
     "fishing": "Charleston Lake: smallmouth and largemouth bass, lake trout, pike",
@@ -2995,7 +2995,7 @@
   {
     "id": "darlington",
     "name": "Darlington",
-    "region": "Central · Bowmanville",
+    "region": "Central Park · Bowmanville",
     "url": "https://www.ontarioparks.ca/park/darlington",
     "blurb": "A lakefront park on Lake Ontario. Three campgrounds, Lakeside (all electric), Cliffside, and Hilltop, with beaches, birding, and marsh trails. A rail line runs past the park.",
     "fishing": "Lake Ontario & McLaughlin Bay, salmon, trout, bass, pike",
@@ -3391,7 +3391,7 @@
   {
     "id": "grundy",
     "name": "Grundy Lake",
-    "region": "Near North · Britt",
+    "region": "Near North Park · Britt",
     "url": "https://www.ontarioparks.ca/park/grundylake",
     "blurb": "Nine campgrounds across four inland lakes. Smooth-rock swimming, quiet water, no motorboats.",
     "fishing": "Northern pike, bass, panfish",
@@ -4000,7 +4000,7 @@
   {
     "id": "algonquinkearney",
     "name": "Kearney Lake",
-    "region": "Algonquin · Highway 60",
+    "region": "Algonquin Park · Highway 60",
     "url": "https://www.ontarioparks.ca/park/algonquin",
     "blurb": "KM 36.5. Mid-size and non-electric, with two beaches on Kearney Lake.",
     "fishing": "Brook trout, lake trout, smallmouth bass (special fishery)",
@@ -4129,7 +4129,7 @@
   {
     "id": "killarney",
     "name": "Killarney",
-    "region": "Near North · Killarney",
+    "region": "Near North Park · Killarney",
     "url": "https://www.ontarioparks.ca/park/killarney",
     "blurb": "A wilderness park of pink granite and white La Cloche quartzite ridges that inspired the Group of Seven. One car campground on George Lake, plus a legendary canoe interior and the 78 km La Cloche Silhouette Trail.",
     "fishing": "George Lake and Georgian Bay: smallmouth bass, pike",
@@ -4340,7 +4340,7 @@
   {
     "id": "killbear",
     "name": "Killbear",
-    "region": "Near North · Nobel",
+    "region": "Near North Park · Nobel",
     "url": "https://www.ontarioparks.ca/park/killbear",
     "blurb": "Seven campgrounds on a Georgian Bay peninsula, windswept pines, big sand beaches. No backcountry.",
     "fishing": "Smallmouth bass, lake trout, walleye, pike, perch",
@@ -5579,7 +5579,7 @@
   {
     "id": "algonquintworivers",
     "name": "Lake of Two Rivers",
-    "region": "Algonquin · Highway 60",
+    "region": "Algonquin Park · Highway 60",
     "url": "https://www.ontarioparks.ca/park/algonquin",
     "blurb": "KM 31. The most scenic corridor campground, next to the Visitor Centre on Lake of Two Rivers.",
     "fishing": "Brook trout, lake trout, smallmouth bass (special fishery)",
@@ -5855,7 +5855,7 @@
   {
     "id": "longpoint",
     "name": "Long Point",
-    "region": "Southwest · Port Rowan",
+    "region": "Southwest Park · Port Rowan",
     "url": "https://www.ontarioparks.ca/park/longpoint",
     "blurb": "A Lake Erie sandspit and UNESCO biosphere near Port Rowan, famous for birding and 2 km of soft sand beach. Four campgrounds, some right in the dunes. Beach-focused, with little hiking.",
     "fishing": "Long Point Bay and Lake Erie: bass, walleye, perch, pike",
@@ -6157,7 +6157,7 @@
   {
     "id": "macgregorpoint",
     "name": "MacGregor Point",
-    "region": "Southwest · Port Elgin",
+    "region": "Southwest Park · Port Elgin",
     "url": "https://www.ontarioparks.ca/park/macgregorpoint",
     "blurb": "A Lake Huron park near Port Elgin known for the Huron Fringe Birding Festival, with three campgrounds, coastal wetlands, and sunset beaches. Trails and boardwalks wind through fen and forest.",
     "fishing": "Lake Huron: bass, pike, salmon, trout",
@@ -6585,7 +6585,7 @@
   {
     "id": "algonquinmew",
     "name": "Mew Lake",
-    "region": "Algonquin · Highway 60",
+    "region": "Algonquin Park · Highway 60",
     "url": "https://www.ontarioparks.ca/park/algonquin",
     "blurb": "KM 30.6. Open year-round with yurts, electrical sites, and the Old Railway Bike Trail.",
     "fishing": "Brook trout, lake trout, smallmouth bass (special fishery)",
@@ -6746,7 +6746,7 @@
   {
     "id": "pinery",
     "name": "Pinery",
-    "region": "Southwest · Grand Bend",
+    "region": "Southwest Park · Grand Bend",
     "url": "https://www.ontarioparks.ca/park/pinery",
     "blurb": "A rare oak savanna on Lake Huron with 10 km of sand beach and the paddleable Old Ausable Channel. Very busy in summer.",
     "fishing": "Old Ausable Channel: largemouth bass, pike, panfish",
@@ -7836,7 +7836,7 @@
   {
     "id": "algonquinpog",
     "name": "Pog Lake",
-    "region": "Algonquin · Highway 60",
+    "region": "Algonquin Park · Highway 60",
     "url": "https://www.ontarioparks.ca/park/algonquin",
     "blurb": "KM 37. The largest corridor campground, with electrical sites and the quiet Section C.",
     "fishing": "Brook trout, lake trout, smallmouth bass (special fishery)",
@@ -8159,7 +8159,7 @@
   {
     "id": "presquile",
     "name": "Presqu'ile",
-    "region": "Southeast · Brighton",
+    "region": "Southeast Park · Brighton",
     "url": "https://www.ontarioparks.ca/park/presquile",
     "blurb": "A Lake Ontario peninsula famous for spring and fall bird migration and monarch butterflies. Eight campgrounds, a long sandy beach, a marsh boardwalk, and a historic lighthouse.",
     "fishing": "Presqu'ile Bay and Lake Ontario: bass, pike, walleye, panfish",
@@ -8665,7 +8665,7 @@
   {
     "id": "algonquinraccoon",
     "name": "Raccoon Lake",
-    "region": "Algonquin · Highway 60",
+    "region": "Algonquin Park · Highway 60",
     "url": "https://www.ontarioparks.ca/park/algonquin",
     "blurb": "KM 41. The smallest and quietest campground on the corridor.",
     "fishing": "Brook trout, lake trout, smallmouth bass (special fishery)",
@@ -8750,7 +8750,7 @@
   {
     "id": "restoule",
     "name": "Restoule",
-    "region": "Near North · Restoule",
+    "region": "Near North Park · Restoule",
     "url": "https://www.ontarioparks.ca/park/restoule",
     "blurb": "A quiet, off-the-beaten-path park near North Bay with three lakeside campgrounds, big fishing lakes, and the must-do Fire Tower Trail up Stormy Lake Bluff.",
     "fishing": "Restoule and Stormy Lakes: walleye, lake trout, pike, muskie, smallmouth bass",
@@ -9084,7 +9084,7 @@
   {
     "id": "algonquinrock",
     "name": "Rock Lake",
-    "region": "Algonquin · Highway 60",
+    "region": "Algonquin Park · Highway 60",
     "url": "https://www.ontarioparks.ca/park/algonquin",
     "blurb": "KM 40, down Rock Lake Road. Pictographs, canoe access, and a busy beach.",
     "fishing": "Brook trout, lake trout, smallmouth bass (special fishery)",
@@ -9245,7 +9245,7 @@
   {
     "id": "sandbanks",
     "name": "Sandbanks",
-    "region": "Southeast · Prince Edward County",
+    "region": "Southeast Park · Prince Edward County",
     "url": "https://www.ontarioparks.ca/park/sandbanks",
     "blurb": "The world's largest baymouth sandbar, with dune beaches on Lake Ontario and calm swimming on West Lake. Books out fast.",
     "fishing": "West and East Lake: bass, pike, panfish",
@@ -9952,7 +9952,7 @@
   {
     "id": "sibbaldpoint",
     "name": "Sibbald Point",
-    "region": "Central · Sutton",
+    "region": "Central Park · Sutton",
     "url": "https://www.ontarioparks.ca/park/sibbaldpoint",
     "blurb": "One of Ontario's busiest parks, a big sandy Lake Simcoe beach, with 600+ shaded sites split between the non-electric East and all-electric West campgrounds.",
     "fishing": "Lake Simcoe, perch, bass, pike, lake trout",
@@ -10610,7 +10610,7 @@
   {
     "id": "silentlake",
     "name": "Silent Lake",
-    "region": "Southeast · Bancroft",
+    "region": "Southeast Park · Bancroft",
     "url": "https://www.ontarioparks.ca/park/silentlake",
     "blurb": "A quiet, motor-free lake near Bancroft with two forested campgrounds and plenty of walk-in sites. Good for paddling and fishing, with hiking and mountain-bike trails.",
     "fishing": "Silent Lake: smallmouth and largemouth bass, lake trout",
@@ -10841,7 +10841,7 @@
   {
     "id": "sixmilelake",
     "name": "Six Mile Lake",
-    "region": "Central · Port Severn",
+    "region": "Central Park · Port Severn",
     "url": "https://www.ontarioparks.ca/park/sixmilelake",
     "blurb": "A small, family-favourite Muskoka park just off Highway 400 with seven campgrounds, three beaches, and calm, sheltered water for paddling. One trail honours painter David Milne.",
     "fishing": "Six Mile Lake: bass, pike, panfish",
@@ -11158,7 +11158,7 @@
   {
     "id": "algonquintea",
     "name": "Tea Lake",
-    "region": "Algonquin · Highway 60",
+    "region": "Algonquin Park · Highway 60",
     "url": "https://www.ontarioparks.ca/park/algonquin",
     "blurb": "KM 11 on the Highway 60 corridor. A small, simple campground where you can paddle straight out onto Canoe Lake.",
     "fishing": "Brook trout, lake trout, smallmouth bass (special fishery)",
