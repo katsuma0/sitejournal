@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Ontario Parks, Site Journal</title>
 <link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#12572F">
@@ -257,7 +257,7 @@
   .addphoto{flex:none;width:78px;height:78px;border-radius:var(--r-sm);border:1.5px dashed var(--mist-2);background:var(--card);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--gap-s);color:var(--forest);font-size:11px;font-weight:700}
   .addphoto:disabled{opacity:.5}
   .photo-note{font-size:11.5px;color:var(--moss);margin:10px 0 0}
-  textarea{width:100%;min-height:106px;resize:none;overflow:hidden;font-family:inherit;font-size:14.5px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:var(--r-sm);padding:14px;outline:none}
+  textarea{width:100%;min-height:106px;resize:none;overflow:hidden;font-family:inherit;font-size:16px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:var(--r-sm);padding:14px;outline:none}
   textarea:focus{border-color:var(--forest)}
   .sheet-foot{display:flex;align-items:center;gap:var(--gap-m);margin-top:22px}
   .saved{font-size:11.5px;font-weight:800;color:var(--paper);background:var(--forest);padding:5px 11px;border-radius:99px;opacity:0;transition:.2s}   .btn-clear{margin-left:auto;cursor:pointer;font-size:13px;font-weight:700;color:var(--moss);background:none;border:none;text-decoration:underline;text-underline-offset:3px}
@@ -342,6 +342,8 @@
   @keyframes viewIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
   .view-anim{animation:viewIn .22s cubic-bezier(.22,1,.36,1)}
   @media (prefers-reduced-motion: reduce){ .view-anim{animation:none} }
+  .gsearch input{font-size:16px}
+  .gresult .tag{min-height:22px;max-height:22px;overflow:hidden}
 </style>
 </head>
 <body>
@@ -533,8 +535,9 @@ function searchAll(q){ q=q.trim().toLowerCase(); if(!q) return [];
       res.push({type:'cg',score:nameHit(c.cgName,nameQ,80),parkId:c.parkId,cgName:c.cgName,title:c.cgName,sub:c.parkName+' · '+c.sub}); }
   });
   if(nameQ && !siteTok.length) SEARCH_TRAILS.forEach(t=>{ if(nameTok.every(x=>t.name.toLowerCase().includes(x)))
-    res.push({type:'trail',score:nameHit(t.name,nameQ,75),parkId:t.parkId,trailName:t.name,title:t.name,sub:fmtLen(t.length)+' · '+t.parkName}); });
-  res.sort((a,b)=>b.score-a.score); return res.slice(0,15);
+    res.push({type:'trail',score:nameHit(t.name,nameQ,75),parkId:t.parkId,trailName:t.name,title:t.name,sub:t.parkName+' · '+t.difficulty+' · '+fmtLen(t.length)}); });
+  const TYPE_RANK={park:0,cg:1,site:2,trail:3};
+  res.sort((a,b)=>(TYPE_RANK[a.type]-TYPE_RANK[b.type])||(b.score-a.score)); return res.slice(0,15);
 }
 function onGSearch(){ const gq=document.getElementById('gq'), q=gq.value;
   document.getElementById('gsearch').classList.toggle('has',!!q.trim());
