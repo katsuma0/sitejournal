@@ -181,6 +181,7 @@
   .site .nstar{position:absolute;top:5px;right:7px;font-size:10px;color:var(--moss);line-height:1}
   .site.rated .nstar{color:rgba(255,255,255,.95)}
   .site .medal{position:absolute;top:5px;right:6px;width:13px;height:13px;color:var(--moss);display:block}
+  .site.wanted .medal{top:-5px;right:-5px;color:var(--amber)}
   .site.rated .medal{color:rgba(255,255,255,.95)}
   .site.hidden{display:none} .cg.filtered-empty{display:none}
   /* trails */
@@ -325,7 +326,6 @@
     border:1px solid var(--line);background:var(--card);color:var(--forest);font-family:inherit;font-weight:700;font-size:14px;border-radius:var(--r-sm)}
   .pa-btn:active{transform:scale(.98)}
   .pa-btn:disabled{opacity:.5}
-  .site{overflow:hidden}
   .site.wanted{border:2px solid var(--amber)}
 </style>
 </head>
@@ -622,7 +622,7 @@ function fillGrid(card){ if(card.dataset.filled) return; const cg=CG_BY_ID(card.
   const frag=document.createDocumentFragment(); cgSites(cg).forEach(s=>frag.appendChild(makeChip(cg,s))); grid.appendChild(frag); card.dataset.filled='1'; }
 const MEDAL_SVG='<svg class="medal" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 1a11 11 0 1 0 .01 0z M12 4.4 13.88 9.41 19.23 9.65 15.04 12.99 16.47 18.15 12 15.2 7.53 18.15 8.96 12.99 4.77 9.65 10.12 9.41z"/></svg>';
 function chipInner(cg,s){ const k=keyOf(curPark.id,cg.id,s), v=sc('site',k), c=scoreColor(v), note=!!noteOf('site',k), want=wantOf(k), photo=photoKeys.has(k);
-  const tr=(note&&photo)?MEDAL_SVG:((note||photo)?'<span class="nstar">★</span>':'');
+  const tr=(note||photo)?MEDAL_SVG:'';
   return `${s}${tr}`; }
 function makeChip(cg,s){ const k=keyOf(curPark.id,cg.id,s), c=scoreColor(sc('site',k));
   const b=document.createElement('button'); b.className='site'+(c?' rated':'')+(wantOf(k)?' wanted':''); b.dataset.key=k; b.dataset.site=s; if(c) b.style.background=c;
@@ -654,7 +654,7 @@ function renderTrails(){
   trails.forEach(t=>{
     const k=trailKey(t.name), v=sc('trail',k), col=scoreColor(v), note=!!noteOf('trail',k), photo=photoKeys.has(k);
     const card=document.createElement('button'); card.className='trail'; card.dataset.trail=t.name;
-    const tmark=(note&&photo)?MEDAL_SVG:((note||photo)?'<span class="nstar">★</span>':'');
+    const tmark=(note||photo)?MEDAL_SVG:'';
     card.innerHTML=`<div class="tr-left"><div class="tr-name">${t.name}</div>
       <div class="tr-meta">${fmtLen(t.length)} · ${t.difficulty}</div></div>
       <div class="tr-rate ${col?'rated':''}" ${col?`style="background:${col}"`:''} ${col?'':'hidden'}>${col?v+'/5':''}</div>${tmark}`;
@@ -668,8 +668,7 @@ function refreshTrailCard(name){
   const r=card.querySelector('.tr-rate'); r.hidden=!col; r.classList.toggle('rated',!!col); r.style.background=col||'';
   r.textContent=col?v+'/5':'';
   card.querySelectorAll('.nstar,.medal').forEach(el=>el.remove());
-  if(note&&photo) card.insertAdjacentHTML('beforeend',MEDAL_SVG);
-  else if(note||photo) card.insertAdjacentHTML('beforeend','<span class="nstar">★</span>');
+  if(note||photo) card.insertAdjacentHTML('beforeend',MEDAL_SVG);
 }
 
 let cur={type:null,k:null,cg:null,site:null,trailName:null};
