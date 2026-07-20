@@ -259,8 +259,7 @@
   textarea{width:100%;min-height:106px;resize:none;overflow:hidden;font-family:inherit;font-size:14.5px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:var(--r-sm);padding:14px;outline:none}
   textarea:focus{border-color:var(--forest)}
   .sheet-foot{display:flex;align-items:center;gap:var(--gap-m);margin-top:22px}
-  .saved{font-size:11.5px;font-weight:800;color:var(--paper);background:var(--forest);padding:5px 11px;border-radius:99px;opacity:0;transition:.2s} .saved.on{opacity:1}
-  .btn-clear{margin-left:auto;cursor:pointer;font-size:13px;font-weight:700;color:var(--moss);background:none;border:none;text-decoration:underline;text-underline-offset:3px}
+  .saved{font-size:11.5px;font-weight:800;color:var(--paper);background:var(--forest);padding:5px 11px;border-radius:99px;opacity:0;transition:.2s}   .btn-clear{margin-left:auto;cursor:pointer;font-size:13px;font-weight:700;color:var(--moss);background:none;border:none;text-decoration:underline;text-underline-offset:3px}
   .btn-done{cursor:pointer;font-size:14px;font-weight:800;color:var(--paper);background:var(--forest);border:none;border-radius:var(--r-sm);padding:12px 26px}
   .btn-done:active{background:var(--forest-press)}
   .lightbox{position:fixed;inset:0;z-index:60;background:rgba(19,32,25,.92);display:none;align-items:center;justify-content:center;padding:24px}
@@ -394,7 +393,6 @@
     <input type="file" id="cameraInput" accept="image/*" capture="environment" hidden>
   </div>
   <div class="sheet-foot">
-    <span class="saved" id="saved">saved</span>
     <button class="btn-clear" id="clearBtn">Clear</button>
     <button class="btn-done" id="doneBtn">Done</button>
   </div>
@@ -699,11 +697,11 @@ function openSheet(type,k,cgId,site){ cur={type,k,cg:cgId,site,trailName:(type==
   document.getElementById('notesLabel').textContent='Notes';
   document.getElementById('d-kind').style.display=(type==='site')?'none':'';
   const nta=document.getElementById('d-notes'); nta.value=noteOf(type,k); autoGrowNotes(nta); paintDots();
-  backdrop.classList.add('on'); sheet.classList.add('on'); document.getElementById('saved').classList.remove('on'); sheet.scrollTop=0; lockScroll();
+  backdrop.classList.add('on'); sheet.classList.add('on'); sheet.scrollTop=0; lockScroll();
 }
 function closeSheet(){ backdrop.classList.remove('on'); sheet.classList.remove('on'); sheet.style.transform=''; unlockScroll(); }
 function ensure(){ if(!state[cur.type][cur.k]) state[cur.type][cur.k]={score:null,note:''}; return state[cur.type][cur.k]; }
-function flashSaved(){ document.getElementById('saved').classList.add('on'); }
+function flashSaved(){}
 function afterChange(){ persist();
   if(cur.type==='site'){ refreshChip(cur.k); refreshCgHeader(cur.cg); updatePark(); renderGlance(); }
   else if(cur.type==='trail'){ refreshTrailCard(cur.trailName); }
