@@ -172,7 +172,7 @@
 
   .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--gap-m);margin-top:14px}
   .site{position:relative;aspect-ratio:1;border-radius:var(--r-sm);border:1px solid var(--mist-2);background:var(--paper);
-    font-weight:700;font-size:14.5px;color:var(--moss);cursor:pointer;display:flex;align-items:center;justify-content:center;
+    font-weight:600;font-size:14.5px;color:var(--moss);cursor:pointer;display:flex;align-items:center;justify-content:center;
     transition:transform .12s;-webkit-tap-highlight-color:transparent;font-variant-numeric:tabular-nums}
   .site:active{transform:scale(.92)} .site.rated{color:#fff;border-color:transparent}
   .site .badge{position:absolute;bottom:2px;right:4px;font-size:8.5px;font-weight:800;opacity:.95}
@@ -327,6 +327,8 @@
   .pa-btn:active{transform:scale(.98)}
   .pa-btn:disabled{opacity:.5}
   .site.wanted{border:2px solid var(--amber)}
+  .site.marked{font-weight:800}
+  .site.marked:not(.rated){color:var(--ink)}
 </style>
 </head>
 <body>
@@ -597,6 +599,7 @@ function openPark(pid){
   renderCgs(); renderTrails(); wireParkControls(); updatePark(); renderGlance();
   document.getElementById('parkTitle').addEventListener('click',function(){ onParkNameTap(p); });
   document.getElementById('view-parks').hidden=true; document.getElementById('view-park').hidden=false; window.scrollTo(0,0);
+  requestAnimationFrame(()=>{ window.scrollTo(0,0); document.documentElement.scrollTop=0; document.body.scrollTop=0; });
 }
 function goHome(){ document.getElementById('view-park').hidden=true; document.getElementById('view-parks').hidden=false; clearGSearch(); renderParks(); window.scrollTo(0,0); }
 document.getElementById('backBtn').addEventListener('click',goHome);
@@ -628,14 +631,13 @@ function fillGrid(card){ if(card.dataset.filled) return; const cg=CG_BY_ID(card.
   const frag=document.createDocumentFragment(); cgSites(cg).forEach(s=>frag.appendChild(makeChip(cg,s))); grid.appendChild(frag); card.dataset.filled='1'; }
 const MEDAL_SVG='<svg class="medal" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 1a11 11 0 1 0 .01 0z M12 4.4 13.88 9.41 19.23 9.65 15.04 12.99 16.47 18.15 12 15.2 7.53 18.15 8.96 12.99 4.77 9.65 10.12 9.41z"/></svg>';
 function chipInner(cg,s){ const k=keyOf(curPark.id,cg.id,s), v=sc('site',k), c=scoreColor(v), note=!!noteOf('site',k), want=wantOf(k), photo=photoKeys.has(k);
-  const tr=(note||photo)?('<span class="nstar'+((note&&photo)?' both':'')+'">★</span>'):'';
-  return `${s}${tr}`; }
+  return `${s}`; }
 function makeChip(cg,s){ const k=keyOf(curPark.id,cg.id,s), c=scoreColor(sc('site',k));
-  const b=document.createElement('button'); b.className='site'+(c?' rated':'')+(wantOf(k)?' wanted':''); b.dataset.key=k; b.dataset.site=s; if(c) b.style.background=c;
+  const b=document.createElement('button'); b.className='site'+(c?' rated':'')+(wantOf(k)?' wanted':'')+((noteOf('site',k)||photoKeys.has(k))?' marked':''); b.dataset.key=k; b.dataset.site=s; if(c) b.style.background=c;
   b.innerHTML=chipInner(cg,s); b.addEventListener('click',()=>openSheet('site',k,cg.id,s)); return b; }
 function refreshChip(k){ const b=document.querySelector(`.site[data-key="${CSS.escape(k)}"]`); if(!b) return;
   const parts=k.split('#'), cg=CG_BY_ID(parts[1]), s=parts.slice(2).join('#'), c=scoreColor(sc('site',k));
-  b.classList.toggle('rated',!!c); b.classList.toggle('wanted',wantOf(k)); b.style.background=c||''; b.innerHTML=chipInner(cg,s); }
+  b.classList.toggle('rated',!!c); b.classList.toggle('wanted',wantOf(k)); b.classList.toggle('marked',!!(noteOf('site',k)||photoKeys.has(k))); b.style.background=c||''; b.innerHTML=chipInner(cg,s); }
 function refreshCgHeader(cgId){ const card=document.querySelector(`.cg[data-cg="${CSS.escape(cgId)}"]`); if(!card) return; const cg=CG_BY_ID(cgId);
   const st=cgStats(curPark,cg), own=sc('campground',cidOf(curPark.id,cgId)), col=scoreColor(own);
   const prog=card.querySelector('.cg-prog'); if(prog) prog.hidden=st.rated===0;
