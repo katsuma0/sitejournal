@@ -219,7 +219,7 @@
   .want-thumbs{display:flex;gap:var(--gap-s);margin-top:9px;overflow-x:auto}
   .want-thumbs img{height:50px;width:50px;object-fit:cover;border-radius:var(--r-xs);flex:none}
   .rank{list-style:none;padding:0;margin:6px 0 0}
-  .rank li{display:flex;align-items:center;gap:var(--gap-l);padding:11px 2px;border-bottom:1px solid var(--line);cursor:pointer}
+  .rank li{display:flex;align-items:center;gap:var(--gap-l);padding:11px 2px;cursor:pointer}
   .rank li:last-child{border-bottom:none}
   .rank .sw{width:34px;height:34px;border-radius:var(--r-xs);flex:none;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#fff;font-variant-numeric:tabular-nums}
   .rank .who{font-weight:700;font-size:14px} .rank .whr{font-size:12px;color:var(--moss)}
@@ -316,6 +316,8 @@
   .stat{min-height:var(--row-h);display:flex;flex-direction:column;justify-content:center}
   .rank li{min-height:var(--row-h);padding-top:0;padding-bottom:0}
   .want-item{min-height:var(--row-h);display:flex;flex-direction:column;justify-content:center}
+  .want-item p:empty{display:none}
+  .want-item .want-thumbs:empty{display:none;margin:0}
 </style>
 </head>
 <body>
@@ -729,7 +731,7 @@ async function renderGlance(){ const p=curPark, st=parkStats(p); const rated=[],
     : `<div class="empty">Star sites with “Want this one” to build your booking shortlist.</div>`;
   wl.forEach(async w=>{ const t=wlBox.querySelector(`[data-thumbs="${CSS.escape(w.k)}"]`); if(!t) return; const ph=await getPhotos(w.k); t.innerHTML=ph.slice(0,6).map(x=>`<img src="${x.data}" alt="">`).join(''); });
   wlBox.querySelectorAll('.want-item').forEach(el=>el.addEventListener('click',(ev)=>{ if(ev.target.tagName!=='IMG'){ const parts=el.dataset.key.split('#'); openSheet('site',el.dataset.key,parts[1],parts.slice(2).join('#')); } }));
-  const top=rated.sort((a,b)=>b.e.score-a.e.score).slice(0,10);
+  const top=rated.sort((a,b)=>b.e.score-a.e.score).slice(0,5);
   const ts=document.getElementById('topSites');
   ts.innerHTML=top.length?top.map(t=>`<li data-key="${t.k}"><span class="sw" style="background:${scoreColor(t.e.score)}">${t.s}</span><div><div class="who">Site ${t.s}</div><div class="whr">${t.cg.id}</div></div><span class="val" style="color:${scoreColor(t.e.score)}">${t.e.score}</span></li>`).join('')
     : `<li class="empty">No sites rated yet.</li>`;
