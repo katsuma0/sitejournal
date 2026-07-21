@@ -408,7 +408,7 @@
 <section id="view-parks">
   <div class="appbar">
     <div class="eyebrow">Ontario Parks</div>
-    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><span class="ver">v0.137 beta</span></div>
+    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><span class="ver">v0.138 beta</span></div>
     <div class="sub">Pick a park, open its campgrounds, and go for a nice walk around the sites. Rate them and note which you'd book next time.</div>
   </div>
   <div class="wrap">
@@ -647,6 +647,7 @@ function onGSearch(){ const gq=document.getElementById('gq'), q=gq.value;
   if(q.trim().toLowerCase()==='statsearch'){ renderStats(); return; }
   if(q.trim().toLowerCase()==='dummydata'){ renderDummyCard(''); return; }
   if(q.trim().toLowerCase()==='dummyhundop'){ renderHundCard(''); return; }
+  if(q.trim().toLowerCase()==='-dummyhundop'){ renderZeroCard(''); return; }
   document.getElementById('gsearch').classList.toggle('has',!!q.trim());
   const rbox=document.getElementById('gresults'), plist=document.getElementById('parkList'), about=document.querySelector('.about-scout');
   if(!q.trim()){ rbox.hidden=true; rbox.innerHTML=''; plist.hidden=false; if(about) about.hidden=false; return; }
@@ -699,6 +700,32 @@ function renderHundCard(msg){
     +'<button class="dummybtn" id="hundGo">'+(msg?'Run again':'Max everything to 5/5')+'</button></div>';
   const go=document.getElementById('hundGo');
   if(go) go.addEventListener('click',()=>{ buzz(12); const m=plantHund(); renderHundCard(m); });
+}
+function renderZeroCard(msg){
+  const rbox=document.getElementById('gresults'), plist=document.getElementById('parkList'), about=document.querySelector('.about-scout');
+  plist.hidden=true; if(about) about.hidden=true; rbox.hidden=false;
+  rbox.innerHTML='<div class="dbg"><div class="dhead">&gt; -dummyhundop</div>'
+    +'<div class="drow"><span class="dk">status</span><span class="dv">'+esc(msg||'ready, the worst season imaginable')+'</span></div>'
+    +'<button class="dummybtn" id="zeroGo" style="background:#B3261E">'+(msg?'Run again':'Zero everything')+'</button></div>';
+  const go=document.getElementById('zeroGo');
+  if(go) go.addEventListener('click',()=>{ buzz(12); const m=plantZero(); renderZeroCard(m); });
+}
+function plantZero(){
+  let sites=0,cgs=0,trails=0,parks=0;
+  PARKS.forEach(p=>{
+    p.campgrounds.forEach(cg=>{ cgSites(cg).forEach(sit=>{ const k=keyOf(p.id,cg.id,sit);
+        const e=state.site[k]||(state.site[k]={}); e.score=0; delete e.want; delete e.note; sites++; });
+      const ck=cidOf(p.id,cg.id); const ce=state.campground[ck]||(state.campground[ck]={}); ce.score=0; delete ce.note; cgs++; });
+    const pk=cidOf(p.id,p.name); const pe=state.campground[pk]||(state.campground[pk]={}); pe.score=0; delete pe.note; parks++;
+    (p.trails||[]).forEach(t=>{ const k=p.id+'#'+t.name; const te=state.trail[k]||(state.trail[k]={}); te.score=0; delete te.note; trails++; });
+  });
+  try{ localStorage.setItem(UNLOCK_KEY,'[]'); }catch(e){}
+  try{ localStorage.removeItem('site-journal-theme'); localStorage.removeItem('site-journal-theme-vars'); }catch(e){}
+  try{ applyTheme('forest'); }catch(e){}
+  state.eggQE2=false;
+  persist(); renderParks();
+  showThemeToast('Everything zeroed. A season to forget.');
+  return sites+' sites, '+cgs+' cgs, '+trails+' trails, '+parks+' parks, all 0/5, nothing unlocked';
 }
 function plantHund(){
   const NOTES=['Perfect site','Could not ask for better','Absolute keeper','Five stars, no notes','Book it every year',
