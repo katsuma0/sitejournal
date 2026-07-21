@@ -74,21 +74,27 @@
   .appbar h1{font-weight:800;font-size:30px;letter-spacing:-.02em;margin:5px 0 0}
   .appbar .sub{color:var(--moss);font-size:13.5px;margin-top:5px;line-height:1.4}
 
-  /* ---------- the map under the home page ---------- */
-  .mapbar{display:flex;flex-direction:column;align-items:center;gap:3px;width:100%;
-    padding:calc(8px + env(safe-area-inset-top)) 0 0;background:none;border:none;cursor:pointer;
-    font-family:inherit;-webkit-tap-highlight-color:transparent}
+  /* ---------- the map under the home page ----------
+     Invisible at rest. Pull down from the very top of the page and the grabber
+     and rounded corners appear, then the page slides to a strip at the bottom
+     showing just the title. Tap or pull the strip up to come back. */
+  .mapbar{display:none;position:absolute;top:0;left:0;right:0;z-index:2;
+    flex-direction:column;align-items:center;background:none;border:none;cursor:pointer;
+    padding:calc(8px + env(safe-area-inset-top)) 0 6px;font-family:inherit;
+    -webkit-tap-highlight-color:transparent}
   .mapbar .mb{width:40px;height:4px;border-radius:99px;background:var(--mist-2)}
-  .mapbar:active .mb{background:var(--forest)}
-  .mapbar-txt{display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:800;
-    letter-spacing:.12em;text-transform:uppercase;color:var(--moss)}
-  #view-parks .appbar{padding-top:10px}
+  body.mapdrag .mapbar,body.mapopen .mapbar{display:flex}
   #mapLayer{position:fixed;inset:0;z-index:4;background:var(--paper)}
   #mapLayer iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
   #mapLayer .mapfall{position:absolute;top:42%;width:100%;text-align:center;color:var(--moss);font-size:14px}
+  #view-parks{position:relative}
+  body.mapdrag #view-parks{border-radius:16px 16px 0 0;background:var(--paper);
+    box-shadow:0 -8px 40px rgba(19,32,25,.22);overflow:hidden}
+  body.mapdrag #view-parks .appbar,body.mapopen #view-parks .appbar{
+    padding-top:calc(28px + env(safe-area-inset-top))}
   body.mapopen{overflow:hidden}
   body.mapopen #view-parks{position:fixed;left:0;right:0;top:0;height:100dvh;z-index:6;overflow:hidden;
-    transform:translateY(calc(100dvh - 92px));border-radius:16px 16px 0 0;
+    transform:translateY(calc(100dvh - 104px));border-radius:16px 16px 0 0;
     background:var(--paper);box-shadow:0 -8px 40px rgba(19,32,25,.22);
     transition:transform .34s cubic-bezier(.32,1.22,.38,1)}
   body.mapopen.mapclosing #view-parks{transform:translateY(0)}
@@ -479,13 +485,12 @@
 </div>
 
 <section id="view-parks">
-  <button class="mapbar" id="mapBar" aria-label="Show the map">
+  <button class="mapbar" id="mapBar" aria-label="Show or hide the map">
     <span class="mb"></span>
-    <span class="mapbar-txt"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2"><path d="m6 9 6 6 6-6"/></svg>Map</span>
   </button>
   <div class="appbar">
     <div class="eyebrow">Ontario Parks</div>
-    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><button class="ver" id="verBtn">v0.181</button></div>
+    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><button class="ver" id="verBtn">v0.182</button></div>
     <div class="sub">Pick a park, open its campgrounds, and go for a nice walk around the sites. Rate them and note which you'd book next time. Ratings and photos are saved to this device only.</div>
   </div>
   <div class="wrap">
@@ -576,6 +581,7 @@
 <div class="sheet" id="versionsSheet" role="dialog" aria-modal="true" aria-label="Versions">
   <div class="grabber"></div>
   <div class="kind" style="margin-bottom:12px">Versions</div>
+  <div class="verline"><span class="vv">v0.182</span>Pull down from the top, the map is underneath</div>
   <div class="verline"><span class="vv">v0.181</span>One app: the fishing map moves in, parks get pins</div>
   <div class="verline"><span class="vv">v0.180</span>Every site checked against reservations</div>
   <div class="verline"><span class="vv">v0.179</span>Backup export and import</div>
@@ -1801,31 +1807,55 @@ makeSheetSwipe(sheet,closeSheet);
       :'https://katsuma0.github.io/on-fishing-reg/#embed=parks';
   var layer=document.getElementById('mapLayer'), frame=document.getElementById('mapFrame'),
       bar=document.getElementById('mapBar'), view=document.getElementById('view-parks'),
-      txt=bar.querySelector('.mapbar-txt'), isOpen=false, loaded=false, dragged=false;
+      isOpen=false, loaded=false, dragged=false;
+  function showLayer(){ if(!loaded){ loaded=true; frame.src=FISH_URL; } layer.hidden=false; }
   function openMap(){ if(isOpen) return; isOpen=true;
-    if(!loaded){ loaded=true; frame.src=FISH_URL; }
-    window.scrollTo(0,0); layer.hidden=false;
+    showLayer(); window.scrollTo(0,0);
     void layer.offsetWidth; /* paint the layer first so the slide can animate */
-    document.body.classList.add('mapopen');
-    txt.lastChild.textContent='Back to parks'; buzz(8); }
+    document.body.classList.remove('mapdrag');
+    document.body.classList.add('mapopen'); buzz(8); }
   function closeMap(){ if(!isOpen) return; isOpen=false;
     document.body.classList.add('mapclosing');
     setTimeout(function(){
       document.body.classList.remove('mapopen'); document.body.classList.remove('mapclosing');
       layer.hidden=true; },360);
-    txt.lastChild.textContent='Map'; buzz(8); }
+    buzz(8); }
   window.sjCloseMap=closeMap;
-  bar.addEventListener('click',function(e){ e.stopPropagation();
-    if(dragged){ dragged=false; return; } if(isOpen) closeMap(); else openMap(); });
+  bar.addEventListener('click',function(e){ e.stopPropagation(); if(isOpen) closeMap(); });
   view.addEventListener('click',function(e){
     if(isOpen){ e.preventDefault(); e.stopPropagation(); closeMap(); } },true);
+  /* pull down from the very top of the page to reveal the map */
   var y0=null;
-  bar.addEventListener('touchstart',function(e){ y0=e.touches[0].clientY; dragged=false; },{passive:true});
-  bar.addEventListener('touchmove',function(e){ if(y0==null) return;
-    var dy=e.touches[0].clientY-y0; if(Math.abs(dy)>12) dragged=true;
-    if(!isOpen&&dy>60){ y0=null; openMap(); }
-    else if(isOpen&&dy<-60){ y0=null; closeMap(); } },{passive:true});
-  bar.addEventListener('touchend',function(){ y0=null; });
+  view.addEventListener('touchstart',function(e){
+    dragged=false;
+    if(isOpen){ y0=e.touches[0].clientY; return; }
+    y0=(window.scrollY<=0)?e.touches[0].clientY:null;
+  },{passive:true});
+  view.addEventListener('touchmove',function(e){
+    if(y0==null) return;
+    var dy=e.touches[0].clientY-y0;
+    if(isOpen){ if(dy<-60){ y0=null; closeMap(); } return; }
+    if(dy>8&&window.scrollY<=0){
+      dragged=true; e.preventDefault();
+      showLayer(); document.body.classList.add('mapdrag');
+      view.style.transform='translateY('+Math.min(dy*0.6,150)+'px)';
+    } else if(dragged){ e.preventDefault();
+      view.style.transform='translateY('+Math.max(0,Math.min(dy*0.6,150))+'px)'; }
+  },{passive:false});
+  view.addEventListener('touchend',function(e){
+    if(y0==null){ dragged=false; return; }
+    var dy=e.changedTouches[0].clientY-y0; y0=null;
+    if(isOpen) return;
+    view.style.transform='';
+    if(dragged&&dy>70){ openMap(); }
+    else{ document.body.classList.remove('mapdrag');
+      setTimeout(function(){ if(!isOpen&&!document.body.classList.contains('mapdrag')) layer.hidden=true; },250); }
+    dragged=false;
+  });
+  /* desktop: scrolling up past the top of the page opens the map too */
+  window.addEventListener('wheel',function(e){
+    if(!isOpen&&window.scrollY<=0&&e.deltaY<-25&&!document.getElementById('view-parks').hidden) openMap();
+  },{passive:true});
   window.addEventListener('message',function(e){
     var d=e.data||{};
     if(d.type==='sj-open-park'&&PARK_BY_ID[d.id]){ closeMap(); setTimeout(function(){ openPark(d.id); },220); } });
