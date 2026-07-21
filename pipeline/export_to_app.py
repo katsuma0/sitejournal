@@ -46,13 +46,8 @@ def main():
             sites = [r["label"] for r in rows]
             if sites:
                 park["campgrounds"].append(dict(id=c["name"], sub=cap_list(c["sub"]), sites=sites))
-        def first_site_num(cg):
-            for lbl in cg["sites"]:
-                m = re.match(r"\d+", str(lbl))
-                if m:
-                    return int(m.group())
-            return 10**9
-        park["campgrounds"].sort(key=first_site_num)
+        # campground order comes from the seed's sort column (numeric ranges
+        # ascending, backcountry and group areas last); do not re-sort here
         if not park["campgrounds"]:
             park["dayuse"] = True
         try:

@@ -5,7 +5,7 @@ This document is the full context for working on Site Journal. Read it before to
 
 ## 1. What this is
 
-Site Journal is a personal, phone-first web app for rating Ontario Provincial Park campsites. One person built it for himself: **Katsuma Onishi**, who books the camping trips for his friends and family and got tired of gambling on unknown sites. The app contains **every reservable Ontario Park** — 124 parks, ~19,869 individual campsites, ~211 trails — and lets him walk a campground, rate each site 0–5, jot a note, attach photos, wishlist the ones worth booking, and rate campgrounds, trails, and whole parks.
+Site Journal is a personal, phone-first web app for rating Ontario Provincial Park campsites. One person built it for himself: **Katsuma Onishi**, who books the camping trips for his friends and family and got tired of gambling on unknown sites. The app contains **every reservable Ontario Park** — 124 parks, 20,031 individual campsites (verified against reservations.ontarioparks.ca on 2026-07-21), ~211 trails — and lets him walk a campground, rate each site 0–5, jot a note, attach photos, wishlist the ones worth booking, and rate campgrounds, trails, and whole parks.
 
 The origin story matters and is in the app itself: a camper named **Laurie** and her husband at Grundy Lake (she introduced them to Bowser, the famous snapping turtle of Gurd Lake) inspired the whole thing. There is a hidden dedication to her (`forlaurie` in the search bar). Grundy Lake is the emotional home of the app; its theme is never changed.
 
