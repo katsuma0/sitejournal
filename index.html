@@ -346,7 +346,8 @@
   .gsearch input{font-size:16px}
   .gresult .tag{min-height:22px;max-height:22px;overflow:hidden}
   .titlebar{display:flex;align-items:baseline;gap:9px}
-  .ver{font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--moss);border:1px solid var(--line);background:var(--card);border-radius:99px;padding:3px 9px;white-space:nowrap;transform:translateY(-3px)}
+  .ver{appearance:none;border:none;background:none;cursor:pointer;font-family:inherit;
+    font-size:15px;font-weight:800;letter-spacing:-.01em;color:var(--moss);white-space:nowrap;padding:8px 6px;margin:-8px 0}
   .resetlink{appearance:none;border:none;background:none;padding:0;cursor:pointer;font-family:inherit;font-size:11.5px;line-height:1.55;
     color:#B0574A;text-decoration:underline;text-underline-offset:2px;font-weight:600}
   .resetlink.armed{font-weight:800}
@@ -434,7 +435,7 @@
 <section id="view-parks">
   <div class="appbar">
     <div class="eyebrow">Ontario Parks</div>
-    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><span class="ver">v0.153 beta</span></div>
+    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><button class="ver" id="verBtn">v0.154</button></div>
     <div class="sub">Pick a park, open its campgrounds, and go for a nice walk around the sites. Rate them and note which you'd book next time. Photos and ratings are saved to this device only.</div>
   </div>
   <div class="wrap">
@@ -458,7 +459,6 @@
 </section>
 
 <footer>
-  <button class="footlink" id="versionsLink">Versions</button><br>
   Created by <a href="https://katsuma0.github.io" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Katsuma Onishi</a>
   <br><br>
   <button class="resetlink" id="resetBtn">Reset all data</button>
@@ -517,6 +517,7 @@
 <div class="sheet" id="versionsSheet" role="dialog" aria-modal="true" aria-label="Versions">
   <div class="grabber"></div>
   <div class="kind" style="margin-bottom:12px">Versions</div>
+  <div class="verline"><span class="vv">v0.154</span>Moved the version number beside the title, tap it for this history</div>
   <div class="verline"><span class="vv">v0.153</span>Moved the version history to its own page</div>
   <div class="verline"><span class="vv">v0.152</span>Tap target and copy consistency audit</div>
   <div class="verline"><span class="vv">v0.151</span>Smoother swipe back with a cleaner edge</div>
@@ -536,6 +537,13 @@
   <div class="verline"><span class="vv">v0.92</span>Added day use parks with park level ratings</div>
   <div class="verline"><span class="vv">v0.79</span>Added wishlist markers and campground photos</div>
   <div class="verline"><span class="vv">v0.62</span>Added region filters</div>
+  <div class="verline"><span class="vv">v0.57</span>Added the first dark park themes</div>
+  <div class="verline"><span class="vv">v0.51</span>Added barrier free and radio free site markers</div>
+  <div class="verline"><span class="vv">v0.44</span>Added offline support and home screen install</div>
+  <div class="verline"><span class="vv">v0.35</span>Added collapsible campgrounds with site grids</div>
+  <div class="verline"><span class="vv">v0.27</span>Added facilities, blurbs, and official park page links</div>
+  <div class="verline"><span class="vv">v0.21</span>Added fishing info and FMZ links for every park</div>
+  <div class="verline"><span class="vv">v0.12</span>Added the colour scale for scores and the top sites list</div>
   <div class="verline"><span class="vv">v0.3</span>Added photo attachments and trail ratings</div>
   <div class="verline"><span class="vv">v0.2</span>Added notes, search, and unlockable park themes</div>
   <div class="verline"><span class="vv">v0.1</span>Initial release with parks, campgrounds, and 0 to 5 site ratings</div>
@@ -1655,7 +1663,7 @@ function openVersions(){ settingsBackdrop.classList.add('on'); const vs=document
 function closeVersions(){ const vs=document.getElementById('versionsSheet'); settingsBackdrop.classList.remove('on'); vs.classList.remove('on'); vs.style.transform=''; unlockScroll(); }
 settingsBackdrop.addEventListener('click',closeVersions);
 makeSheetSwipe(document.getElementById('versionsSheet'),closeVersions);
-document.getElementById('versionsLink').addEventListener('click',function(){ buzz(6); openVersions(); });
+document.getElementById('verBtn').addEventListener('click',function(e){ e.stopPropagation(); buzz(6); openVersions(); });
 makeSheetSwipe(document.getElementById('groupSheet'),closeGroup);
 document.getElementById('groupPill').addEventListener('click',function(){ buzz(6); openGroup(); });
 document.getElementById('sortPill').addEventListener('click',function(){ buzz(6); openSort(); });
