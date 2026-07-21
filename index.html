@@ -345,9 +345,9 @@
   @media (prefers-reduced-motion: reduce){ .view-anim{animation:none} }
   .gsearch input{font-size:16px}
   .gresult .tag{min-height:22px;max-height:22px;overflow:hidden}
-  .titlebar{display:flex;align-items:baseline;gap:9px}
+  .titlebar{display:flex;align-items:baseline;justify-content:space-between;gap:9px}
   .ver{appearance:none;border:none;background:none;cursor:pointer;font-family:inherit;
-    font-size:15px;font-weight:800;letter-spacing:-.01em;color:var(--moss);white-space:nowrap;padding:8px 6px;margin:-8px 0}
+    font-weight:800;font-size:30px;letter-spacing:-.02em;color:var(--ink);white-space:nowrap;padding:0;margin:5px 0 0}
   .resetlink{appearance:none;border:none;background:none;padding:0;cursor:pointer;font-family:inherit;font-size:11.5px;line-height:1.55;
     color:#B0574A;text-decoration:underline;text-underline-offset:2px;font-weight:600}
   .resetlink.armed{font-weight:800}
@@ -436,7 +436,7 @@
 <section id="view-parks">
   <div class="appbar">
     <div class="eyebrow">Ontario Parks</div>
-    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><button class="ver" id="verBtn">v0.155</button></div>
+    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><button class="ver" id="verBtn">v0.156</button></div>
     <div class="sub">Pick a park, open its campgrounds, and go for a nice walk around the sites. Rate them and note which you'd book next time. Photos and ratings are saved to this device only.</div>
   </div>
   <div class="wrap">
@@ -518,35 +518,32 @@
 <div class="sheet" id="versionsSheet" role="dialog" aria-modal="true" aria-label="Versions">
   <div class="grabber"></div>
   <div class="kind" style="margin-bottom:12px">Versions</div>
-  <div class="verline"><span class="vv">v0.154</span>Moved the version number beside the title, tap it for this history</div>
-  <div class="verline"><span class="vv">v0.153</span>Moved the version history to its own page</div>
+  <div class="verline"><span class="vv">v0.154</span>Version history beside the title, tap the number to open it</div>
   <div class="verline"><span class="vv">v0.152</span>Tap target and copy consistency audit</div>
   <div class="verline"><span class="vv">v0.151</span>Smoother swipe back with a cleaner edge</div>
-  <div class="verline"><span class="vv">v0.143</span>Added Group by with letter, park type, region, and rated sections</div>
-  <div class="verline"><span class="vv">v0.142</span>Moved About and Themes into the title sheet</div>
-  <div class="verline"><span class="vv">v0.133</span>Added a park rating card to every park</div>
-  <div class="verline"><span class="vv">v0.128</span>Added a per park stats section with rating graphs</div>
+  <div class="verline"><span class="vv">v0.143</span>Group by with letter, park type, region, and rated sections</div>
+  <div class="verline"><span class="vv">v0.142</span>About moved into the title sheet</div>
+  <div class="verline"><span class="vv">v0.133</span>A park rating card for every park</div>
+  <div class="verline"><span class="vv">v0.128</span>Per park stats with rating graphs</div>
   <div class="verline"><span class="vv">v0.124</span>Fixed update delivery inside the iOS app</div>
-  <div class="verline"><span class="vv">v0.116</span>Added driving times from any Ontario town you choose</div>
-  <div class="verline"><span class="vv">v0.113</span>Refreshed every park theme to match its name and character</div>
-  <div class="verline"><span class="vv">v0.111</span>Added per park data reset and a version history</div>
-  <div class="verline"><span class="vv">v0.110</span>Added the interactive swipe back gesture</div>
-  <div class="verline"><span class="vv">v0.106</span>Added haptic feedback and interface animations</div>
+  <div class="verline"><span class="vv">v0.116</span>Driving times from any Ontario town you choose</div>
+  <div class="verline"><span class="vv">v0.111</span>Per park data reset and a version history</div>
+  <div class="verline"><span class="vv">v0.110</span>The interactive swipe back gesture</div>
+  <div class="verline"><span class="vv">v0.106</span>Haptic feedback and interface animations</div>
   <div class="verline"><span class="vv">v0.104</span>Fixed note zoom and improved search ordering</div>
-  <div class="verline"><span class="vv">v0.100</span>Added every reservable Ontario Park and a GTA driving time sort</div>
-  <div class="verline"><span class="vv">v0.93</span>Added park pinning and new sort options</div>
-  <div class="verline"><span class="vv">v0.92</span>Added day use parks with park level ratings</div>
-  <div class="verline"><span class="vv">v0.79</span>Added wishlist markers and campground photos</div>
-  <div class="verline"><span class="vv">v0.62</span>Added region filters</div>
-  <div class="verline"><span class="vv">v0.57</span>Added the first dark park themes</div>
-  <div class="verline"><span class="vv">v0.51</span>Added barrier free and radio free site markers</div>
-  <div class="verline"><span class="vv">v0.44</span>Added offline support and home screen install</div>
-  <div class="verline"><span class="vv">v0.35</span>Added collapsible campgrounds with site grids</div>
-  <div class="verline"><span class="vv">v0.27</span>Added facilities, blurbs, and official park page links</div>
-  <div class="verline"><span class="vv">v0.21</span>Added fishing info and FMZ links for every park</div>
-  <div class="verline"><span class="vv">v0.12</span>Added the colour scale for scores and the top sites list</div>
-  <div class="verline"><span class="vv">v0.3</span>Added photo attachments and trail ratings</div>
-  <div class="verline"><span class="vv">v0.2</span>Added notes, search, and unlockable park themes</div>
+  <div class="verline"><span class="vv">v0.100</span>Every reservable Ontario Park and a GTA driving time sort</div>
+  <div class="verline"><span class="vv">v0.93</span>Park pinning and new sort options</div>
+  <div class="verline"><span class="vv">v0.92</span>Day use parks with park level ratings</div>
+  <div class="verline"><span class="vv">v0.79</span>Wishlist markers and campground photos</div>
+  <div class="verline"><span class="vv">v0.62</span>Region filters</div>
+  <div class="verline"><span class="vv">v0.51</span>Barrier free and radio free site markers</div>
+  <div class="verline"><span class="vv">v0.44</span>Offline support and home screen install</div>
+  <div class="verline"><span class="vv">v0.35</span>Collapsible campgrounds with site grids</div>
+  <div class="verline"><span class="vv">v0.27</span>Facilities, blurbs, and official park page links</div>
+  <div class="verline"><span class="vv">v0.21</span>Fishing info and FMZ links for every park</div>
+  <div class="verline"><span class="vv">v0.12</span>Colour scale for scores and the top sites list</div>
+  <div class="verline"><span class="vv">v0.3</span>Photo attachments and trail ratings</div>
+  <div class="verline"><span class="vv">v0.2</span>Notes and search</div>
   <div class="verline"><span class="vv">v0.1</span>Initial release with parks, campgrounds, and 0 to 5 site ratings</div>
 </div>
 
