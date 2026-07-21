@@ -438,6 +438,8 @@
   .gsec:active{transform:scale(.985)}
   .rank li .tr-rate{margin-left:auto}
   .want-item .h .tr-rate{margin-left:auto;font-size:12.5px}
+  #view-park{min-height:100dvh;display:flex;flex-direction:column}
+  #view-park footer{margin-top:auto}
 </style>
 </head>
 <body>
@@ -445,7 +447,7 @@
 <section id="view-parks">
   <div class="appbar">
     <div class="eyebrow">Ontario Parks</div>
-    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><button class="ver" id="verBtn">v0.169</button></div>
+    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><button class="ver" id="verBtn">v0.170</button></div>
     <div class="sub">Pick a park, open its campgrounds, and go for a nice walk around the sites. Rate them and note which you'd book next time. Ratings and photos are saved to this device only.</div>
   </div>
   <div class="wrap">
@@ -459,6 +461,12 @@
     <div id="parkList"></div>
     
   </div>
+  <footer>
+    Ratings and photos are saved to this device only.<br>
+    Created by <a href="https://katsuma0.github.io" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Katsuma Onishi</a>
+    <br><br>
+    <button class="resetlink" id="resetBtn">Reset all data</button>
+  </footer>
 </section>
 
 <section id="view-park" hidden>
@@ -466,14 +474,13 @@
     <button class="backbtn" id="backBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m15 18-6-6 6-6"/></svg><span id="backLabel">All Parks</span></button>
   </div></div>
   <div class="wrap" id="parkBody"></div>
+  <footer>
+    Ratings and photos are saved to this device only.<br>
+    Created by <a href="https://katsuma0.github.io" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Katsuma Onishi</a>
+    <br><br>
+    <button class="resetlink" id="resetBtnPark"></button>
+  </footer>
 </section>
-
-<footer>
-  Ratings and photos are saved to this device only.<br>
-  Created by <a href="https://katsuma0.github.io" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Katsuma Onishi</a>
-  <br><br>
-  <button class="resetlink" id="resetBtn">Reset all data</button>
-</footer>
 
 <div class="backdrop" id="backdrop"></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Rate">
@@ -1168,22 +1175,27 @@ document.getElementById('backBtn').addEventListener('click',function(){
   vp.classList.remove('view-anim');
   vp.style.transition='transform .26s cubic-bezier(.32,.72,.35,1)'; vp.style.transform='translateX(100%)';
   setTimeout(function(){ vp.style.transition=''; vp.style.transform=''; goHome(); },250); });
-(function(){ const rb=document.getElementById('resetBtn'); if(!rb) return; let armed=false, t=null;
-  function onPark(){ return curPark&&!document.getElementById('view-park').hidden; }
-  window.parkResetSync=function(){ armed=false; clearTimeout(t); rb.classList.remove('armed'); rb.style.display='inline';
-    rb.textContent=onPark()?('Reset '+curPark.name+' data'):'Reset all data'; };
-  rb.addEventListener('click',async function(){
-    const park=onPark();
-    if(!armed){ armed=true; rb.classList.add('armed');
-      rb.textContent=park?'Tap again to erase this park':'Tap again to erase everything';
-      t=setTimeout(function(){ window.parkResetSync(); },4000); return; }
-    clearTimeout(t);
-    if(park){ await wipeParkData(curPark.id); window.parkResetSync(); return; }
-    try{ localStorage.removeItem(KEY); }catch(e){}
-    ['site-journal-theme','site-journal-theme-vars','site-journal-unlocks','site-journal-sort','site-journal-origin'].forEach(function(k){ try{ localStorage.removeItem(k); }catch(e){} });
-    try{ indexedDB.deleteDatabase('scout-photos'); }catch(e){}
-    setTimeout(function(){ location.reload(); },200); });
-  window.parkResetSync(); })();
+(function(){
+  const rb=document.getElementById('resetBtn');
+  if(rb){ let armed=false, t=null;
+    rb.addEventListener('click',function(){
+      if(!armed){ armed=true; rb.classList.add('armed'); rb.textContent='Tap again to erase everything';
+        t=setTimeout(function(){ armed=false; rb.classList.remove('armed'); rb.textContent='Reset all data'; },4000); return; }
+      clearTimeout(t);
+      try{ localStorage.removeItem(KEY); }catch(e){}
+      ['site-journal-theme','site-journal-theme-vars','site-journal-unlocks','site-journal-sort','site-journal-origin'].forEach(function(k){ try{ localStorage.removeItem(k); }catch(e){} });
+      try{ indexedDB.deleteDatabase('scout-photos'); }catch(e){}
+      setTimeout(function(){ location.reload(); },200); }); }
+  const pb=document.getElementById('resetBtnPark');
+  if(pb){ let armed=false, t=null;
+    window.parkResetSync=function(){ armed=false; clearTimeout(t); pb.classList.remove('armed');
+      pb.textContent=curPark?('Reset '+curPark.name+' data'):''; };
+    pb.addEventListener('click',async function(){ if(!curPark) return;
+      if(!armed){ armed=true; pb.classList.add('armed'); pb.textContent='Tap again to erase this park';
+        t=setTimeout(function(){ window.parkResetSync(); },4000); return; }
+      clearTimeout(t); await wipeParkData(curPark.id); window.parkResetSync(); });
+    window.parkResetSync(); }
+})();
 (function(){ /* interactive drag-back: the park page follows your finger and reveals home underneath */
   var vp=document.getElementById('view-park'), vh=document.getElementById('view-parks');
   var sx=0, sy=0, dx=0, lastX=0, lastT=0, vel=0, deciding=false, dragging=false, parkScrollY=0;
