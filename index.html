@@ -423,7 +423,7 @@
 <section id="view-parks">
   <div class="appbar">
     <div class="eyebrow">Ontario Parks</div>
-    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><span class="ver">v0.148 beta</span></div>
+    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><span class="ver">v0.149 beta</span></div>
     <div class="sub">Pick a park, open its campgrounds, and go for a nice walk around the sites. Rate them and note which you'd book next time.</div>
   </div>
   <div class="wrap">
@@ -981,11 +981,14 @@ function renderFilters(){ const b=document.getElementById('regionPill'); if(!b) 
   b.innerHTML='<span class="fct">'+(regionFilter==='All'?'All regions':regionFilter)+'</span>'+ch;
   b.classList.toggle('on', regionFilter!=='All');
   const sb=document.getElementById('sortPill'); if(!sb) return;
-  sb.innerHTML='<span class="fct">'+(sortMode==='Default'?'Sort':(sortMode==='Closest to GTA'&&ORIGIN?('Closest to '+ORIGIN.name):sortMode))+'</span>'+ch;
+  sb.innerHTML='<span class="fct">'+(sortMode==='Default'?'Sort':(sortMode==='Closest to GTA'&&ORIGIN?('From '+ORIGIN.name):sortMode))+'</span>'+ch;
   sb.classList.toggle('on', sortMode!=='Default');
   const gb=document.getElementById('groupPill'); if(!gb) return;
   gb.innerHTML='<span class="fct">'+(groupMode==='None'?'Group by':groupMode)+'</span>'+ch;
-  gb.classList.toggle('on', groupMode!=='None'); }
+  gb.classList.toggle('on', groupMode!=='None');
+  if(sortMode==='Closest to GTA'&&ORIGIN){ requestAnimationFrame(function(){
+    const f=sb.querySelector('.fct');
+    if(f&&f.scrollWidth>f.clientWidth+1) f.textContent=ORIGIN.name; }); } }
 function renderSortRows(){ const box=document.getElementById('sortRows'); if(!box) return; box.innerHTML='';
   SORT_MODES.forEach(m=>{ const b=document.createElement('button'); b.className='rrow'+(m===sortMode?' on':'');
     const disp=(m==='Closest to GTA')?('Closest to '+(ORIGIN?ORIGIN.name:'GTA')):m;
