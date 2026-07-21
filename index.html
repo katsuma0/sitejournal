@@ -423,7 +423,7 @@
 <section id="view-parks">
   <div class="appbar">
     <div class="eyebrow">Ontario Parks</div>
-    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><span class="ver">v0.149 beta</span></div>
+    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><span class="ver">v0.150 beta</span></div>
     <div class="sub">Pick a park, open its campgrounds, and go for a nice walk around the sites. Rate them and note which you'd book next time.</div>
   </div>
   <div class="wrap">
@@ -986,9 +986,11 @@ function renderFilters(){ const b=document.getElementById('regionPill'); if(!b) 
   const gb=document.getElementById('groupPill'); if(!gb) return;
   gb.innerHTML='<span class="fct">'+(groupMode==='None'?'Group by':groupMode)+'</span>'+ch;
   gb.classList.toggle('on', groupMode!=='None');
-  if(sortMode==='Closest to GTA'&&ORIGIN){ requestAnimationFrame(function(){
+  if(sortMode==='Closest to GTA'&&ORIGIN){
     const f=sb.querySelector('.fct');
-    if(f&&f.scrollWidth>f.clientWidth+1) f.textContent=ORIGIN.name; }); } }
+    if(f){ void sb.offsetWidth; /* force layout so the measurement is real */
+      if(f.scrollWidth>f.clientWidth) f.textContent=ORIGIN.name;
+      if(f.scrollWidth>f.clientWidth) f.textContent=ORIGIN.name.split(' ')[0]; } } }
 function renderSortRows(){ const box=document.getElementById('sortRows'); if(!box) return; box.innerHTML='';
   SORT_MODES.forEach(m=>{ const b=document.createElement('button'); b.className='rrow'+(m===sortMode?' on':'');
     const disp=(m==='Closest to GTA')?('Closest to '+(ORIGIN?ORIGIN.name:'GTA')):m;
