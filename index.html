@@ -342,8 +342,8 @@
   #sortRows .rcount{font-size:12.5px;opacity:.62}
   @keyframes viewIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
   @keyframes parkIn{from{opacity:.55;transform:translateX(24%)}to{opacity:1;transform:none}}
-  #view-park.view-anim{animation:parkIn .38s cubic-bezier(.32,1.3,.38,1)}
-  .view-anim{animation:viewIn .3s cubic-bezier(.3,1.25,.4,1)}
+  #view-park.view-anim{animation:parkIn .36s cubic-bezier(.32,1.08,.38,1)}
+  .view-anim{animation:viewIn .28s cubic-bezier(.3,1.12,.4,1)}
   @media (prefers-reduced-motion: reduce){ .view-anim{animation:none} }
   .gsearch input{font-size:16px}
   .gresult .tag{min-height:22px;max-height:22px;overflow:hidden}
@@ -440,8 +440,7 @@
   .want-item .h .tr-rate{margin-left:auto;font-size:12.5px}
   #view-park{min-height:100dvh;display:flex;flex-direction:column}
   #view-park footer{margin-top:auto}
-  #view-park{box-shadow:80px 0 0 0 var(--paper)}
-  .backbar{box-shadow:80px 0 0 0 var(--forest)}
+
 </style>
 </head>
 <body>
@@ -449,7 +448,7 @@
 <section id="view-parks">
   <div class="appbar">
     <div class="eyebrow">Ontario Parks</div>
-    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><button class="ver" id="verBtn">v0.172</button></div>
+    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><button class="ver" id="verBtn">v0.173</button></div>
     <div class="sub">Pick a park, open its campgrounds, and go for a nice walk around the sites. Rate them and note which you'd book next time. Ratings and photos are saved to this device only.</div>
   </div>
   <div class="wrap">
