@@ -48,7 +48,7 @@
   .rrow .rcount{color:var(--moss);font-weight:600;font-size:12.5px}
   .rrow.on{border-color:var(--forest);color:var(--forest);box-shadow:inset 0 0 0 1px var(--forest)}
   .rrow:active{transform:scale(.99)}
-  .themerow.scrolly{max-height:396px;overflow-y:auto;overscroll-behavior:contain}
+  .themerow.scrolly{max-height:none;overflow:visible}
   .toast{position:fixed;left:50%;bottom:calc(26px + env(safe-area-inset-bottom));transform:translate(-50%,90px);
     appearance:none;border:none;background:var(--ink);color:var(--paper);padding:13px 20px;border-radius:var(--r);
     font-family:inherit;font-size:13.5px;font-weight:700;z-index:70;opacity:0;transition:.35s cubic-bezier(.22,1,.36,1);
@@ -437,7 +437,7 @@
 <section id="view-parks">
   <div class="appbar">
     <div class="eyebrow">Ontario Parks</div>
-    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><button class="ver" id="verBtn">v0.159</button></div>
+    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><button class="ver" id="verBtn">v0.160</button></div>
     <div class="sub">Pick a park, open its campgrounds, and go for a nice walk around the sites. Rate them and note which you'd book next time. Photos and ratings are saved to this device only.</div>
   </div>
   <div class="wrap">
