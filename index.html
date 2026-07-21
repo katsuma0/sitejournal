@@ -373,7 +373,7 @@
 <section id="view-parks">
   <div class="appbar">
     <div class="eyebrow">Ontario Parks</div>
-    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><span class="ver">v0.123 beta</span></div>
+    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><span class="ver">v0.124 beta</span></div>
     <div class="sub">Pick a park, open its campgrounds, and go for a nice walk around the sites. Rate them and note which you'd book next time.</div>
   </div>
   <div class="wrap">
@@ -489,6 +489,7 @@ function loadParksEmbedded(){
   catch(e){ setParks([]); }
 }
 async function refreshParksFromNetwork(){
+  if(window.Capacitor) return; /* the app ships its data embedded; a local file can only ever be stale */
   try{
     const res=await fetch('./parks-data.json',{cache:'no-store'});
     if(!res.ok) return;
