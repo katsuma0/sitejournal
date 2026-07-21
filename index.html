@@ -365,6 +365,7 @@
   .about-scout .fld{margin-top:16px}
   .townq{width:100%;font-size:16px;font-family:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);
     border-radius:var(--r-sm);padding:12px 14px;outline:none;margin:2px 0 10px}
+  .ghostpark{display:none}
 </style>
 </head>
 <body>
@@ -372,7 +373,7 @@
 <section id="view-parks">
   <div class="appbar">
     <div class="eyebrow">Ontario Parks</div>
-    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><span class="ver">v0.119 beta</span></div>
+    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><span class="ver">v0.120 beta</span></div>
     <div class="sub">Pick a park, open its campgrounds, and go for a nice walk around the sites. Rate them and note which you'd book next time.</div>
   </div>
   <div class="wrap">
@@ -562,7 +563,7 @@ function parkStats(park){ let total=0,rated=0,sum=0;
 /* ================= global search ================= */
 let SEARCH_CGS=[], SEARCH_TRAILS=[];
 function buildSearchIndex(){ SEARCH_CGS=[]; SEARCH_TRAILS=[];
-  PARKS.forEach(p=>{ if(!parkVisible(p)) return; p.campgrounds.forEach(cg=>{ const sites=cgSites(cg);
+  PARKS.forEach(p=>{ p.campgrounds.forEach(cg=>{ const sites=cgSites(cg);
     SEARCH_CGS.push({parkId:p.id,parkName:p.name,cgName:cg.id,sub:cg.sub,
       siteSet:new Set(sites.map(s=>s.toLowerCase())), sitesOrig:sites}); });
     (p.trails||[]).forEach(t=>SEARCH_TRAILS.push({parkId:p.id,parkName:p.name,name:t.name,length:t.length,difficulty:t.difficulty})); }); }
@@ -669,8 +670,7 @@ function openSort(){ renderSortRows(); settingsBackdrop.classList.add('on'); doc
 function closeSort(){ const ss=document.getElementById('sortSheet'); settingsBackdrop.classList.remove('on'); ss.classList.remove('on'); ss.style.transform=''; unlockScroll(); }
 function renderRegionRows(){ const box=document.getElementById('regionRows'); if(!box) return; box.innerHTML='';
   const rows=['All','Pinned'].concat(regionOrder().filter(r=>r!=='All'));
-  const VPc=PARKS.filter(parkVisible);
-  rows.forEach(r=>{ const n=(r==='All')?VPc.length:(r==='Pinned')?VPc.filter(p=>isPinned(p.id)).length:VPc.filter(p=>broadOf(p)===r).length;
+  rows.forEach(r=>{ const n=(r==='All')?PARKS.length:(r==='Pinned')?PARKS.filter(p=>isPinned(p.id)).length:PARKS.filter(p=>broadOf(p)===r).length;
     const b=document.createElement('button'); b.className='rrow'+(r===regionFilter?' on':'');
     b.innerHTML='<span>'+(r==='All'?'All regions':r)+'</span><span class="rcount tnum">'+n+'</span>';
     b.addEventListener('click',()=>{ regionFilter=r; buzz(9); closeRegion(); renderFilters(); renderParks(); });
@@ -689,8 +689,7 @@ function metaLine(p,st){ const isAlg=(p.region||'').indexOf('Algonquin')===0;
 function renderParks(){ const box=document.getElementById('parkList'); box.innerHTML='';
   if(!PARKS.length){ box.innerHTML=`<div class="empty" style="border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:26px 18px">No park data loaded.<br>Add parks in the SQL pipeline, run <b>export_to_app.py</b>, and place <b>parks-data.json</b> next to this app.</div>`; return; }
   const idx=new Map(PARKS.map((p,i)=>[p.id,i]));
-  const VP=PARKS.filter(parkVisible);
-  const shown=(regionFilter==='All')?VP.slice():(regionFilter==='Pinned')?VP.filter(p=>isPinned(p.id)):VP.filter(p=>broadOf(p)===regionFilter);
+  const shown=(regionFilter==='All')?PARKS.slice():(regionFilter==='Pinned')?PARKS.filter(p=>isPinned(p.id)):PARKS.filter(p=>broadOf(p)===regionFilter);
   const SM={}; shown.forEach(p=>SM[p.id]=parkStats(p));
   const dflt=(a,b)=>a.name.localeCompare(b.name)||(idx.get(a.id)-idx.get(b.id));
   let cmp=dflt;
@@ -707,6 +706,7 @@ function renderParks(){ const box=document.getElementById('parkList'); box.inner
     b.innerHTML=`${isPinned(p.id)?'<span class="pc-pinb"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M12 16v6" fill="none"/><path d="M9 3h6v4l2 5H7l2-5z"/></svg></span>':''}<div class="pc-top"><span class="pc-name">${p.name}</span>${started?`<span class="pc-pct tnum">${st.rated}/${st.total}</span>`:''}</div>
       <div class="pc-meta">${metaLine(p,st)}</div>
       ${started?`<div class="pc-bar"><i style="width:${st.pct}%"></i></div>`:''}`;
+    if(p.id===EGG_ID&&!eggFound()) b.classList.add('ghostpark');
     b.addEventListener('click',()=>openPark(p.id)); box.appendChild(b); }); }
 
 /* ================= single park ================= */
