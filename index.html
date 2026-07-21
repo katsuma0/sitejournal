@@ -341,6 +341,8 @@
   .pc-pinb svg{width:13px;height:13px;fill:currentColor}
   #sortRows .rcount{font-size:12.5px;opacity:.62}
   @keyframes viewIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes parkIn{from{opacity:.55;transform:translateX(24%)}to{opacity:1;transform:none}}
+  #view-park.view-anim{animation:parkIn .3s cubic-bezier(.32,.72,.35,1)}
   .view-anim{animation:viewIn .22s cubic-bezier(.22,1,.36,1)}
   @media (prefers-reduced-motion: reduce){ .view-anim{animation:none} }
   .gsearch input{font-size:16px}
@@ -359,7 +361,8 @@
   .cg.open .grid{animation:viewIn .18s ease}
   #view-park.dragback{position:fixed;left:0;right:0;z-index:5;background:var(--paper);
     width:100%;max-width:none;margin:0;padding:0;min-height:100vh;
-    box-shadow:none;touch-action:pan-y;will-change:transform}
+    border-radius:22px 0 0 22px;box-shadow:-2px 0 10px rgba(0,0,0,.07);
+    touch-action:pan-y;will-change:transform}
   .parkfoot{margin:26px 0 6px;text-align:center}
   .verline{font-size:12.5px;color:var(--moss);margin:7px 0;line-height:1.5}
   .verline .vv{font-weight:800;color:var(--ink);margin-right:9px;font-variant-numeric:tabular-nums}
@@ -430,6 +433,9 @@
   .footlink{appearance:none;border:none;background:none;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;
     color:var(--moss);text-decoration:underline;padding:8px 12px;margin:-4px 0 2px;position:relative}
   .verline{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .park-card{transition:transform .14s ease}
+  .park-card:active{transform:scale(.982)}
+  .gsec:active{transform:scale(.985)}
 </style>
 </head>
 <body>
@@ -437,7 +443,7 @@
 <section id="view-parks">
   <div class="appbar">
     <div class="eyebrow">Ontario Parks</div>
-    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><button class="ver" id="verBtn">v0.164</button></div>
+    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><button class="ver" id="verBtn">v0.165</button></div>
     <div class="sub">Pick a park, open its campgrounds, and go for a nice walk around the sites. Rate them and note which you'd book next time. Photos and ratings are saved to this device only.</div>
   </div>
   <div class="wrap">
@@ -1154,7 +1160,11 @@ function goHome(){ const vp=document.getElementById('view-park');
     const vh=document.getElementById('view-parks'); vh.hidden=false;
     vh.classList.remove('view-anim'); void vh.offsetWidth; vh.classList.add('view-anim');
     clearGSearch(); renderParks(); window.scrollTo(0,homeScrollY); if(window.parkResetSync) parkResetSync(); },150); }
-document.getElementById('backBtn').addEventListener('click',goHome);
+document.getElementById('backBtn').addEventListener('click',function(){
+  const vp=document.getElementById('view-park');
+  vp.classList.remove('view-anim');
+  vp.style.transition='transform .26s cubic-bezier(.32,.72,.35,1)'; vp.style.transform='translateX(100%)';
+  setTimeout(function(){ vp.style.transition=''; vp.style.transform=''; goHome(); },250); });
 (function(){ const rb=document.getElementById('resetBtn'); if(!rb) return; let armed=false, t=null;
   function onPark(){ return curPark&&!document.getElementById('view-park').hidden; }
   window.parkResetSync=function(){ armed=false; clearTimeout(t); rb.classList.remove('armed'); rb.style.display='inline';
@@ -1177,11 +1187,11 @@ document.getElementById('backBtn').addEventListener('click',goHome);
   function prep(){ parkScrollY=window.scrollY||document.documentElement.scrollTop||0;
     vp.classList.remove('view-anim'); vp.classList.add('dragback'); vp.style.top=(-parkScrollY)+'px';
     vh.hidden=false; window.scrollTo(0,homeScrollY); }
-  function cancel(){ vp.style.transition='transform .22s cubic-bezier(.22,1,.36,1)'; vp.style.transform='translateX(0)';
+  function cancel(){ vp.style.transition='transform .32s cubic-bezier(.22,1.28,.36,1)'; vp.style.transform='translateX(0)';
     setTimeout(function(){ window.scrollTo(0,parkScrollY); vh.hidden=true;
       vp.style.transition=''; vp.style.transform=''; vp.style.top=''; vp.classList.remove('dragback'); },230); }
   function complete(){ buzz(9);
-    vp.style.transition='transform .18s ease-out'; vp.style.transform='translateX(105%)';
+    vp.style.transition='transform .26s cubic-bezier(.32,.72,.35,1)'; vp.style.transform='translateX(105%)';
     setTimeout(function(){ vp.style.transition=''; vp.style.transform=''; vp.style.top=''; vp.classList.remove('dragback'); vp.hidden=true;
       clearGSearch(); renderParks(); window.scrollTo(0,homeScrollY); if(window.parkResetSync) parkResetSync(); },190); }
   vp.addEventListener('touchstart',function(e){ if(e.touches.length!==1) return;
