@@ -443,7 +443,7 @@
 <section id="view-parks">
   <div class="appbar">
     <div class="eyebrow">Ontario Parks</div>
-    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><button class="ver" id="verBtn">v0.165</button></div>
+    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><button class="ver" id="verBtn">v0.166</button></div>
     <div class="sub">Pick a park, open its campgrounds, and go for a nice walk around the sites. Rate them and note which you'd book next time. Photos and ratings are saved to this device only.</div>
   </div>
   <div class="wrap">
@@ -1278,10 +1278,9 @@ function renderTrails(){
   trails.forEach(t=>{
     const k=trailKey(t.name), v=sc('trail',k), col=scoreColor(v), note=!!noteOf('trail',k), photo=photoKeys.has(k);
     const card=document.createElement('button'); card.className='trail'; card.dataset.trail=t.name;
-    const tmark=(note||photo)?('<span class="nstar'+((note&&photo)?' both':'')+'">★</span>'):'';
     card.innerHTML=`<div class="tr-left"><div class="tr-name">${t.name}</div>
       <div class="tr-meta">${fmtLen(t.length)} · ${t.difficulty}</div></div>
-      <div class="tr-rate ${col?'rated':''}" ${col?`style="background:${col}"`:''} ${col?'':'hidden'}>${col?v+'/5':''}</div>${tmark}`;
+      <div class="tr-rate ${col?'rated':''}" ${col?`style="background:${col}"`:''} ${col?'':'hidden'}>${col?v+'/5':''}</div>`;
     card.addEventListener('click',()=>openSheet('trail',k,t.name));
     box.appendChild(card);
   });
@@ -1292,7 +1291,6 @@ function refreshTrailCard(name){
   const r=card.querySelector('.tr-rate'); r.hidden=!col; r.classList.toggle('rated',!!col); r.style.background=col||'';
   r.textContent=col?v+'/5':'';
   card.querySelectorAll('.nstar,.medal').forEach(el=>el.remove());
-  if(note||photo) card.insertAdjacentHTML('beforeend','<span class="nstar'+((note&&photo)?' both':'')+'">★</span>');
 }
 
 let cur={type:null,k:null,cg:null,site:null,trailName:null};
