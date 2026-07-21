@@ -380,7 +380,7 @@
 <section id="view-parks">
   <div class="appbar">
     <div class="eyebrow">Ontario Parks</div>
-    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><span class="ver">v0.125 beta</span></div>
+    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><span class="ver">v0.126 beta</span></div>
     <div class="sub">Pick a park, open its campgrounds, and go for a nice walk around the sites. Rate them and note which you'd book next time.</div>
   </div>
   <div class="wrap">
@@ -647,22 +647,39 @@ function renderDebug(){
   renderConsole('debugsearch',pairs);
 }
 function renderStats(){
-  let sites=0,cgs=0,trails=0,dayuse=0,five=0,zero=0; const parks=new Set();
+  let sites=0,cgs=0,trails=0,dayuse=0,five=0,zero=0,notes=0,want=0,sum=0,n=0;
+  const parks=new Set(), perPark={};
   ['site','campground','trail'].forEach(b=>{ const o=state[b]||{};
-    for(const k in o){ const e=o[k]; const sv=(e&&typeof e.score==='number')?e.score:null; if(sv==null) continue;
+    for(const k in o){ const e=o[k]; if(!e) continue;
+      const sv=(typeof e.score==='number')?e.score:null;
+      if(e.note) notes++;
+      if(b==='site'&&e.want) want++;
+      if(sv==null) continue;
       const pid=k.split('#')[0], park=PARK_BY_ID[pid];
       if(b==='site') sites++;
       else if(b==='trail') trails++;
       else{ const nm=k.slice(pid.length+1); if(park&&park.dayuse&&nm===park.name) dayuse++; else cgs++; }
-      parks.add(pid); if(sv===5) five++; if(sv===0) zero++; } });
+      parks.add(pid); perPark[pid]=(perPark[pid]||0)+1;
+      sum+=sv; n++; if(sv===5) five++; if(sv===0) zero++; } });
+  let topPid=null; for(const pid in perPark) if(topPid==null||perPark[pid]>perPark[topPid]) topPid=pid;
+  const topName=topPid&&PARK_BY_ID[topPid]?PARK_BY_ID[topPid].name+' ('+perPark[topPid]+')':'none yet';
+  const unlocked=getUnlocks().length, totalThemes=PARK_THEMES.length;
   renderConsole('statsearch',[
+    ['themes_unlocked',unlocked+' / '+totalThemes],
     ['parks_rated',parks.size],
     ['campgrounds_rated',cgs],
     ['sites_rated',sites],
     ['trails_rated',trails],
     ['dayuse_rated',dayuse],
+    ['notes_written',notes],
+    ['photos_saved',photoKeys.size],
+    ['wishlist_sites',want],
+    ['parks_pinned',Array.isArray(state.pins)?state.pins.length:0],
     ['five_stars_given',five],
-    ['zero_stars_given',zero]
+    ['zero_stars_given',zero],
+    ['average_score',n?(sum/n).toFixed(2):'n/a'],
+    ['most_scouted',topName],
+    ['hidden_parks_found',(eggFound()?1:0)+' / 1']
   ]);
 }
 function gotoResult(r){ if(r.parkId===EGG_ID&&!eggFound()) revealEgg();
