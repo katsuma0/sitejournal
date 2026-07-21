@@ -380,7 +380,7 @@
 <section id="view-parks">
   <div class="appbar">
     <div class="eyebrow">Ontario Parks</div>
-    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><span class="ver">v0.126 beta</span></div>
+    <div class="titlebar"><h1 id="appTitle" style="cursor:pointer;-webkit-tap-highlight-color:transparent">Site Journal</h1><span class="ver">v0.127 beta</span></div>
     <div class="sub">Pick a park, open its campgrounds, and go for a nice walk around the sites. Rate them and note which you'd book next time.</div>
   </div>
   <div class="wrap">
@@ -678,8 +678,7 @@ function renderStats(){
     ['five_stars_given',five],
     ['zero_stars_given',zero],
     ['average_score',n?(sum/n).toFixed(2):'n/a'],
-    ['most_scouted',topName],
-    ['hidden_parks_found',(eggFound()?1:0)+' / 1']
+    ['most_scouted',topName]
   ]);
 }
 function gotoResult(r){ if(r.parkId===EGG_ID&&!eggFound()) revealEgg();
@@ -816,13 +815,13 @@ function openPark(pid){
     </div>
     </div>
     <div id="wantSection" hidden><div class="seclabel">Wishlist</div><div id="wantList"></div></div>
-    <div id="topSection" hidden><div class="seclabel">Top sites</div><ul class="rank" id="topSites"></ul></div>
-    <div class="parkfoot"><button class="resetlink" id="parkResetBtn">Reset ${p.name} data</button></div>`;
+    <div id="topSection" hidden><div class="seclabel">Top sites</div><ul class="rank" id="topSites"></ul></div>`;
   renderCgs(); renderTrails(); wireParkControls(); updatePark(); renderGlance();
   document.getElementById('parkTitle').addEventListener('click',function(){ onParkNameTap(p); });
   homeScrollY=window.scrollY||document.documentElement.scrollTop||0;
   document.getElementById('view-parks').hidden=true; const vp=document.getElementById('view-park'); vp.hidden=false;
   vp.classList.remove('view-anim'); void vp.offsetWidth; vp.classList.add('view-anim'); window.scrollTo(0,0);
+  if(window.parkResetSync) parkResetSync();
   requestAnimationFrame(()=>{ window.scrollTo(0,0); document.documentElement.scrollTop=0; document.body.scrollTop=0; });
 }
 function goHome(){ const vp=document.getElementById('view-park');
@@ -830,18 +829,17 @@ function goHome(){ const vp=document.getElementById('view-park');
   setTimeout(function(){ vp.classList.remove('view-out'); vp.hidden=true;
     const vh=document.getElementById('view-parks'); vh.hidden=false;
     vh.classList.remove('view-anim'); void vh.offsetWidth; vh.classList.add('view-anim');
-    clearGSearch(); renderParks(); window.scrollTo(0,homeScrollY); },150); }
+    clearGSearch(); renderParks(); window.scrollTo(0,homeScrollY); if(window.parkResetSync) parkResetSync(); },150); }
 document.getElementById('backBtn').addEventListener('click',goHome);
 (function(){ const rb=document.getElementById('resetBtn'); if(!rb) return; let armed=false, t=null;
-  rb.addEventListener('click',function(){
-    if(!armed){ armed=true; rb.textContent='Tap again to erase everything'; rb.classList.add('armed');
-      t=setTimeout(function(){ armed=false; rb.textContent='Reset all data'; rb.classList.remove('armed'); },4000); return; }
-    clearTimeout(t);
-    try{ localStorage.removeItem(KEY); }catch(e){}
-    ['site-journal-theme','site-journal-theme-vars','site-journal-unlocks','site-journal-sort'].forEach(function(k){ try{ localStorage.removeItem(k); }catch(e){} });
-    try{ indexedDB.deleteDatabase('scout-photos'); }catch(e){}
-    setTimeout(function(){ location.reload(); },200);
-  }); })();
+  window.parkResetSync=function(){ armed=false; clearTimeout(t);
+    if(curPark&&!document.getElementById('view-park').hidden){ rb.style.display='inline'; rb.textContent='Reset '+curPark.name+' data'; rb.classList.remove('armed'); }
+    else{ rb.style.display='none'; rb.classList.remove('armed'); } };
+  rb.addEventListener('click',async function(){ if(!curPark) return;
+    if(!armed){ armed=true; rb.textContent='Tap again to erase this park'; rb.classList.add('armed');
+      t=setTimeout(function(){ window.parkResetSync(); },4000); return; }
+    clearTimeout(t); await wipeParkData(curPark.id); window.parkResetSync(); });
+  window.parkResetSync(); })();
 (function(){ /* interactive drag-back: the park page follows your finger and reveals home underneath */
   var vp=document.getElementById('view-park'), vh=document.getElementById('view-parks');
   var sx=0, sy=0, dx=0, lastX=0, lastT=0, vel=0, deciding=false, dragging=false, parkScrollY=0;
@@ -854,7 +852,7 @@ document.getElementById('backBtn').addEventListener('click',goHome);
   function complete(){ buzz(9);
     vp.style.transition='transform .18s ease-out'; vp.style.transform='translateX(105%)';
     setTimeout(function(){ vp.style.transition=''; vp.style.transform=''; vp.style.top=''; vp.classList.remove('dragback'); vp.hidden=true;
-      clearGSearch(); renderParks(); window.scrollTo(0,homeScrollY); },190); }
+      clearGSearch(); renderParks(); window.scrollTo(0,homeScrollY); if(window.parkResetSync) parkResetSync(); },190); }
   vp.addEventListener('touchstart',function(e){ if(e.touches.length!==1) return;
     sx=e.touches[0].clientX; sy=e.touches[0].clientY; lastX=sx; lastT=Date.now(); vel=0; dx=0; deciding=true; dragging=false; },{passive:true});
   vp.addEventListener('touchmove',function(e){ if(!deciding&&!dragging) return;
@@ -915,13 +913,6 @@ function wireParkControls(){
   if(pr){ pr.addEventListener('click',()=>openSheet('campground',cidOf(curPark.id,curPark.name),curPark.name,null)); refreshParkRate(); }
   const pb=document.getElementById('pinBtn');
   if(pb){ pb.addEventListener('click',()=>{ togglePin(curPark.id); pb.classList.toggle('on',isPinned(curPark.id)); buzz(9); renderParks(); }); }
-  const prb=document.getElementById('parkResetBtn');
-  if(prb){ let armed=false, t=null; const orig=prb.textContent;
-    prb.addEventListener('click',async()=>{
-      if(!armed){ armed=true; prb.textContent='Tap again to erase this park'; prb.classList.add('armed');
-        t=setTimeout(()=>{ armed=false; prb.textContent=orig; prb.classList.remove('armed'); },4000); return; }
-      clearTimeout(t); await wipeParkData(curPark.id); });
-  }
 }
 async function wipeParkData(pid){
   ['site','campground','trail'].forEach(b=>{ if(!state[b]) return;
